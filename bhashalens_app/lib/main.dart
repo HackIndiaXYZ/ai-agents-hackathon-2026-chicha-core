@@ -1,0 +1,405 @@
+import 'package:bhashalens_app/services/firestore_service.dart';
+import 'package:bhashalens_app/services/firebase_auth_service.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:async';
+import 'package:bhashalens_app/models/voice_command.dart';
+
+// Pages
+import 'package:bhashalens_app/pages/onboarding_page.dart';
+import 'package:bhashalens_app/pages/auth/login_page.dart';
+import 'package:bhashalens_app/pages/auth/signup_page.dart';
+import 'package:bhashalens_app/pages/auth/forgot_password_page.dart';
+import 'package:bhashalens_app/pages/home_page.dart';
+import 'package:bhashalens_app/pages/camera_translate_page.dart';
+import 'package:bhashalens_app/pages/settings_page.dart';
+import 'package:bhashalens_app/pages/help_support_page.dart';
+import 'package:bhashalens_app/pages/emergency_page.dart';
+import 'package:bhashalens_app/pages/offline_models_page.dart';
+import 'package:bhashalens_app/pages/error_fallback_page.dart';
+import 'package:bhashalens_app/pages/voice_translate_page.dart';
+import 'package:bhashalens_app/pages/text_translate_page.dart';
+import 'package:bhashalens_app/pages/translation_mode_page.dart';
+import 'package:bhashalens_app/pages/explain_mode_page.dart';
+import 'package:bhashalens_app/pages/assistant_mode_page.dart';
+import 'package:bhashalens_app/pages/history_saved_page.dart';
+import 'package:bhashalens_app/pages/splash_screen.dart';
+import 'package:bhashalens_app/pages/saved_translations_page.dart';
+import 'package:bhashalens_app/pages/simplify_mode_page.dart';
+
+// Services
+import 'package:bhashalens_app/services/enhanced_accessibility_service.dart';
+import 'package:bhashalens_app/services/audio_feedback/audio_feedback_service.dart';
+import 'package:bhashalens_app/services/local_storage_service.dart';
+import 'package:bhashalens_app/services/voice_translation_service.dart';
+import 'package:bhashalens_app/services/db_initializer.dart';
+import 'package:bhashalens_app/services/aws_api_gateway_client.dart';
+import 'package:bhashalens_app/services/hybrid_translation_service.dart';
+import 'package:bhashalens_app/services/history_service.dart';
+import 'package:bhashalens_app/services/saved_translations_service.dart';
+import 'package:bhashalens_app/services/preferences_service.dart';
+import 'package:bhashalens_app/services/export_service.dart';
+import 'package:bhashalens_app/services/monitoring_service.dart';
+import 'package:bhashalens_app/services/ml_kit_translation_service.dart';
+import 'package:bhashalens_app/services/gemini_service.dart';
+
+// Other
+import 'package:bhashalens_app/theme/app_theme.dart';
+import 'package:bhashalens_app/firebase_options.dart';
+// Removed unused import
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  initializeDatabaseFactory();
+
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    debugPrint("Warning: Failed to load .env file: $e");
+  }
+
+  // Load Amplify Config
+  String amplifyConfig = '';
+  try {
+    amplifyConfig = await rootBundle.loadString('lib/amplify_outputs.json');
+  } catch (e) {
+    debugPrint('Warning: Failed to load amplify_outputs.json: $e');
+  }
+
+  bool firebaseInitialized = false;
+  try {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+    firebaseInitialized = true;
+  } catch (e) {
+    debugPrint("Firebase init error: $e");
+    try {
+      await Firebase.initializeApp();
+      firebaseInitialized = true;
+    } catch (_) {}
+  }
+
+  final localStorageService = LocalStorageService();
+  final geminiApiKey = dotenv.env['GEMINI_API_KEY'];
+  
+  debugPrint('--- BOOTSTRAP DIAGNOSTICS ---');
+  debugPrint('Dotenv keys loaded: ${dotenv.env.keys.length}');
+  debugPrint('GEMINI_API_KEY present: ${geminiApiKey != null && geminiApiKey.isNotEmpty}');
+  debugPrint('-----------------------------');
+
+  final geminiService = GeminiService(
+    apiKey: geminiApiKey,
+    localStorageService: localStorageService,
+  );
+  await geminiService.initialize();
+
+  // Initialize Accessibility Services
+  final voiceNavigation = VoiceNavigationController();
+  final audioFeedback = AudioFeedbackServiceFactory.create();
+  AccessibilityServiceContainer.instance.registerVoiceNavigationService(voiceNavigation);
+  AccessibilityServiceContainer.instance.registerAudioFeedbackService(audioFeedback);
+  final accessibilityController = await AccessibilityServiceContainer.instance.getAccessibilityController();
+
+  final providers = <SingleChildWidget>[
+    ChangeNotifierProvider<AccessibilityController>.value(value: accessibilityController),
+    Provider<LocalStorageService>.value(value: localStorageService),
+    Provider<GeminiService>.value(value: geminiService),
+    ChangeNotifierProvider<AwsApiGatewayClient>(create: (_) {
+      final client = AwsApiGatewayClient();
+      if (amplifyConfig.isNotEmpty) {
+        client.configure(amplifyConfig);
+      }
+      return client;
+    }),
+    ChangeNotifierProxyProvider2<AwsApiGatewayClient, LocalStorageService,
+        HistoryService>(
+      create: (context) => HistoryService(
+        apiClient: Provider.of<AwsApiGatewayClient>(context, listen: false),
+        localStorageService:
+            Provider.of<LocalStorageService>(context, listen: false),
+      )..fetchHistory(),
+      update: (_, apiClient, localStorage, history) => history!,
+    ),
+    ChangeNotifierProxyProvider2<AwsApiGatewayClient, LocalStorageService,
+        SavedTranslationsService>(
+      create: (context) => SavedTranslationsService(
+        apiClient: Provider.of<AwsApiGatewayClient>(context, listen: false),
+        localStorageService:
+            Provider.of<LocalStorageService>(context, listen: false),
+      )..fetchSavedTranslations(),
+      update: (_, apiClient, localStorage, saved) => saved!,
+    ),
+    ChangeNotifierProxyProvider2<AwsApiGatewayClient, LocalStorageService,
+        PreferencesService>(
+      create: (context) => PreferencesService(
+        apiClient: Provider.of<AwsApiGatewayClient>(context, listen: false),
+        localStorageService:
+            Provider.of<LocalStorageService>(context, listen: false),
+      )..fetchPreferences(),
+      update: (_, apiClient, localStorage, prefs) => prefs!,
+    ),
+    ChangeNotifierProxyProvider<AwsApiGatewayClient, ExportService>(
+      create: (context) => ExportService(
+        apiClient: Provider.of<AwsApiGatewayClient>(context, listen: false),
+      ),
+      update: (_, apiClient, export) => export!,
+    ),
+    Provider<MonitoringService>(
+      create: (context) => MonitoringService(
+        apiClient: Provider.of<AwsApiGatewayClient>(context, listen: false),
+      ),
+    ),
+    ProxyProvider<LocalStorageService, HybridTranslationService>(
+      update: (_, localStorage, __) {
+        debugPrint('Providing HybridTranslationService (Gemini Strict)...');
+        try {
+          final service = HybridTranslationService(
+            localStorageService: localStorage,
+            onDeviceTranslation: MlKitTranslationService(),
+            onDeviceLLM: geminiService,
+          );
+          debugPrint('HybridTranslationService provided successfully.');
+          return service;
+        } catch (e, stack) {
+          debugPrint('Error creating HybridTranslationService: $e');
+          debugPrint(stack.toString());
+          rethrow;
+        }
+      },
+    ),
+    ChangeNotifierProxyProvider<HybridTranslationService,
+        VoiceTranslationService>(
+      create: (context) => VoiceTranslationService(
+        localStorageService: localStorageService,
+      ),
+      update: (context, hybrid, voice) {
+        debugPrint('Updating VoiceTranslationService with hybrid provider');
+        return voice!..hybridService = hybrid;
+      },
+    ),
+    ChangeNotifierProvider(create: (_) => SavedTranslationsProvider()),
+  ];
+
+  if (firebaseInitialized) {
+    final authService = FirebaseAuthService();
+    providers.addAll([
+      Provider<FirebaseAuthService>(create: (_) => authService),
+      Provider<FirestoreService>(create: (_) => FirestoreService()),
+    ]);
+  }
+
+  runApp(
+    MultiProvider(
+      providers: providers,
+      child: const BhashaLensApp(),
+    ),
+  );
+}
+
+class BhashaLensApp extends StatefulWidget {
+  const BhashaLensApp({super.key});
+
+  @override
+  State<BhashaLensApp> createState() => _BhashaLensAppState();
+}
+
+class _BhashaLensAppState extends State<BhashaLensApp> {
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  bool _showSplash = true;
+  bool _isOnboardingCompleted = false;
+// Removed unused _isInitialized field
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    final localStorage =
+        Provider.of<LocalStorageService>(context, listen: false);
+    final completed = await localStorage.isOnboardingCompleted();
+
+    if (mounted) {
+      setState(() {
+        _isOnboardingCompleted = completed;
+      });
+    }
+
+    // Wire navigation callback for voice commands after first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _wireVoiceNavigationCallback();
+    });
+  }
+
+  /// Wire voice navigation commands to the app's Navigator
+  void _wireVoiceNavigationCallback() {
+    try {
+      final controller =
+          Provider.of<AccessibilityController>(context, listen: false);
+      final voiceNav = controller.voiceNavigation;
+      if (voiceNav is VoiceNavigationController) {
+        voiceNav.setNavigationCallback(
+          (NavigationAction action, Map<String, dynamic> params) {
+            final navigator = _navigatorKey.currentState;
+            if (navigator == null) {
+              debugPrint('Navigator state is null, cannot navigate');
+              return;
+            }
+
+            // Diagnostic feedback
+            final scaffoldMessenger = ScaffoldMessenger.maybeOf(context);
+            if (scaffoldMessenger != null) {
+              scaffoldMessenger.showSnackBar(
+                SnackBar(
+                  content: Text('Voice Command: ${action.toString().split('.').last}'),
+                  duration: const Duration(seconds: 2),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            }
+
+            switch (action) {
+              case NavigationAction.home:
+                navigator.pushNamedAndRemoveUntil('/home', (r) => false);
+                break;
+              case NavigationAction.cameraTranslation:
+                navigator.pushNamed('/camera_translate');
+                break;
+              case NavigationAction.voiceTranslation:
+                navigator.pushNamed('/voice_translate');
+                break;
+              case NavigationAction.textTranslation:
+                navigator.pushNamed('/text_translate');
+                break;
+              case NavigationAction.settings:
+                navigator.pushNamed('/settings');
+                break;
+              case NavigationAction.back:
+                navigator.maybePop();
+                break;
+              case NavigationAction.startTranslation:
+                // Handle page-specific actions like "capture" or "record"
+                final subAction = params['action'] ?? 'generic';
+                debugPrint('Triggering page action: $subAction');
+                // These are usually handled at the page level, 
+                // but we log them here for debugging.
+                break;
+              default:
+                debugPrint('Unhandled navigation action: $action');
+            }
+          },
+        );
+        debugPrint('Voice navigation callback wired to Navigator');
+      }
+    } catch (e) {
+      debugPrint('Error wiring voice navigation callback: $e');
+    }
+  }
+
+  String _normalizeRouteName(String? routeName) {
+    if (routeName == null || routeName.isEmpty) return '/';
+    var normalized = routeName.trim();
+    if (!normalized.startsWith('/')) normalized = '/$normalized';
+    return normalized;
+  }
+
+  Route<dynamic> _onGenerateRoute(RouteSettings settings) {
+    final routeName = _normalizeRouteName(settings.name);
+
+    Widget builder;
+    switch (routeName) {
+      case '/':
+        // The root route is now handled by the 'home' property for better reactivity
+        builder =
+            _isOnboardingCompleted ? const HomePage() : const OnboardingPage();
+        break;
+      case '/onboarding':
+        builder = const OnboardingPage();
+        break;
+      case '/login':
+        builder = const LoginPage();
+        break;
+      case '/signup':
+        builder = const SignupPage();
+        break;
+      case '/forgot_password':
+        builder = const ForgotPasswordPage();
+        break;
+      case '/home':
+        builder = const HomePage();
+        break;
+      case '/camera_translate':
+        builder = const CameraTranslatePage();
+        break;
+      case '/voice_translate':
+        builder = const VoiceTranslatePage();
+        break;
+      case '/saved_translations':
+        builder = const SavedTranslationsPage();
+        break;
+      case '/history_saved':
+        builder =
+            HistorySavedPage(initialIndex: settings.arguments as int? ?? 0);
+        break;
+      case '/settings':
+        builder = const SettingsPage();
+        break;
+      case '/help_support':
+        builder = const HelpSupportPage();
+        break;
+      case '/emergency':
+        builder = const EmergencyPage();
+        break;
+      case '/offline_models':
+        builder = const OfflineModelsPage();
+        break;
+      case '/translation_mode':
+        builder = const TranslationModePage();
+        break;
+      case '/explain_mode':
+        builder = const ExplainModePage();
+        break;
+      case '/assistant_mode':
+        builder = const AssistantModePage();
+        break;
+      case '/text_translate':
+        builder = const TextTranslatePage();
+        break;
+      case '/simplify_mode':
+        builder = const SimplifyModePage();
+        break;
+      case '/error':
+        builder = ErrorFallbackPage(
+            error: settings.arguments as String? ?? 'Unknown error');
+        break;
+      default:
+        builder = ErrorFallbackPage(error: 'Route not found: $routeName');
+    }
+
+    return MaterialPageRoute(builder: (_) => builder, settings: settings);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final accessibilityController = Provider.of<AccessibilityController>(context);
+    return MaterialApp(
+      navigatorKey: _navigatorKey,
+      title: 'BhashaLens',
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: accessibilityController.themeMode,
+      debugShowCheckedModeBanner: false,
+      home: _showSplash
+          ? SplashScreen(onComplete: () => setState(() => _showSplash = false))
+          : (_isOnboardingCompleted
+              ? const HomePage()
+              : const OnboardingPage()),
+      onGenerateRoute: _onGenerateRoute,
+    );
+  }
+}

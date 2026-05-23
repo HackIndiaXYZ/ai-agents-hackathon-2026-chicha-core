@@ -1,0 +1,109 @@
+name: bhashalens_app
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+4003
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Firebase
+  firebase_core: ^3.0.0
+  firebase_auth: ^5.0.0
+  firebase_analytics: ^11.0.0
+  cloud_firestore: ^5.6.12
+  
+  # UI & Utilities
+  carousel_slider: ^5.1.1
+  cupertino_icons: ^1.0.8
+  shared_preferences: ^2.2.3
+  sqflite: ^2.3.3
+  sqflite_sqlcipher: ^3.1.1
+  provider: ^6.1.2
+  intl: ^0.20.2
+  collection: ^1.18.0
+  path: ^1.8.3
+  app_links: ^6.4.1
+  connectivity_plus: ^7.0.0
+  flutter_dotenv: ^6.0.0
+  share_plus: ^10.0.3
+  image_picker: ^1.0.4
+  flutter_secure_storage: ^9.0.0
+  
+  # Networking
+  http: ^1.1.0
+  web_socket_channel: ^3.0.1
+  google_fonts: ^6.2.1
+  
+  # AWS Integration (using http for API Gateway calls)
+  # Note: Flutter doesn't have official AWS SDK, using http client for REST API calls
+  url_launcher: ^6.2.5
+  
+  # ML & AI
+  google_mlkit_translation: ^0.12.0
+  google_mlkit_text_recognition: ^0.14.0
+  google_mlkit_language_id: ^0.10.0
+  google_generative_ai: ^0.4.0
+  tflite_flutter: ^0.10.4
+
+  
+  # Media
+  camera: ^0.11.0+1
+  speech_to_text: ^7.0.0
+  flutter_tts: ^3.8.5
+  record: ^6.0.0
+
+  
+  # Auth
+  google_sign_in: ^6.2.1
+  permission_handler: ^11.3.1
+  sqflite_common_ffi: ^2.4.0+2
+  sqflite_common_ffi_web: ^1.1.1
+  path_provider: ^2.1.5
+  amplify_flutter: ^2.4.0
+  amplify_auth_cognito: ^2.4.0
+  amplify_api: ^2.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.14.0
+  build_runner: ^2.12.2
+  mockito: ^5.6.3
+
+dependency_overrides:
+    amplify_db_common_dart: ^0.4.15
+    sqlite3: ^3.1.2
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/
+    - assets/logo2.webp
+    - assets/google_logo.png
+    - .env
+    - lib/amplify_outputs.json
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  web:
+    generate: true
+    image_path: "assets/logo2.png"
+    background_color: "#FFF8F5"
+    theme_color: "#FF6B35"
+  windows:
+    generate: true
+    image_path: "assets/logo2.png"
+    icon_size: 48
+  macos:
+    generate: true
+    image_path: "assets/logo2.png"
+  image_path: "assets/logo2.png"
