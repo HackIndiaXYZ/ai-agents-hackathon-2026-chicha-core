@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:bhashalens_app/models/language_pair.dart';
-import 'package:bhashalens_app/services/offline_translation_service.dart';
+import 'package:bhashalens_app/features/translation/data/models/language_pair.dart';
+import 'package:bhashalens_app/features/translation/data/services/offline_translation_service.dart';
 
 /// Example usage of the Translation Engine
 /// This demonstrates the key features and usage patterns

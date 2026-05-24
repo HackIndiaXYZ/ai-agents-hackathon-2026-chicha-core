@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bhashalens_app/services/ml_kit_translation_service.dart';
+import 'package:bhashalens_app/features/translation/data/services/ml_kit_translation_service.dart';
 
 void main() {
   group('ML Kit Translation Service', () {

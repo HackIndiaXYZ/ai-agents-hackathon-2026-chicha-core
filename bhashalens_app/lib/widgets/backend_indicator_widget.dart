@@ -1,4 +1,4 @@
-import 'package:bhashalens_app/models/translation_history_entry.dart';
+import 'package:bhashalens_app/features/history_saved/data/models/translation_history_entry.dart';
 import 'package:flutter/material.dart';
 
 /// Shows a small chip indicating which backend processed the result:

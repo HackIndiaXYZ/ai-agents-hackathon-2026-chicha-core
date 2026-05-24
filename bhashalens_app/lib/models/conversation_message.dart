@@ -1,4 +1,4 @@
-import 'package:bhashalens_app/models/language_pair.dart';
+import 'package:bhashalens_app/features/translation/data/models/language_pair.dart';
 
 
 /// Data model for conversation history messages

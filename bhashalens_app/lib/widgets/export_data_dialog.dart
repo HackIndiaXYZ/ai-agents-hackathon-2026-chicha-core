@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:bhashalens_app/services/export_service.dart';
-import 'package:bhashalens_app/services/aws_api_gateway_client.dart';
+import 'package:bhashalens_app/features/history_saved/domain/services/export_service.dart';
+import 'package:bhashalens_app/core/network/aws_client.dart';
 
 /// Dialog to export history/saved data via AWS. Opens presigned download URL
 /// when cloud sync is enabled; shows message when disabled.

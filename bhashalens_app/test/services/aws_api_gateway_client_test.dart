@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bhashalens_app/services/aws_api_gateway_client.dart';
-import 'package:bhashalens_app/services/retry_policy.dart';
+import 'package:bhashalens_app/core/network/aws_client.dart';
+import 'package:bhashalens_app/core/network/retry_policy.dart';
 
 void main() {
   late AwsApiGatewayClient client;

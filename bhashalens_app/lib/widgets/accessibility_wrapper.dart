@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../services/enhanced_accessibility_service.dart';
+import 'package:bhashalens_app/core/accessibility/enhanced_accessibility_service.dart';
 import 'package:flutter/services.dart';
 
 class AccessibilityWrapper extends StatefulWidget {

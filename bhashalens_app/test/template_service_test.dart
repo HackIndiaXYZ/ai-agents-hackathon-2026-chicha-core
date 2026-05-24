@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bhashalens_app/services/template_service.dart';
-import 'package:bhashalens_app/models/detected_intent.dart';
+import 'package:bhashalens_app/features/explain_simplify/domain/services/template_service.dart';
+import 'package:bhashalens_app/features/explain_simplify/data/models/detected_intent.dart';
 
 void main() {
   late TemplateService templateService;
