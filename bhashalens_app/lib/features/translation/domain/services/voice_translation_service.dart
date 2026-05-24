@@ -191,6 +191,11 @@ class VoiceTranslationService extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Publicly accessible method to refresh offline status for a language
+  Future<void> refreshOfflineStatus(String languageCode) async {
+    await _refreshOfflineStatus(languageCode);
+  }
+
   /// Check offline readiness for all three components: STT, Translation, TTS
   Future<LanguageOfflineStatus> checkLanguageReadiness(String languageCode) async {
     final mlKitDownloaded = await _mlKitService.isModelDownloaded(languageCode);
@@ -203,6 +208,9 @@ class VoiceTranslationService extends ChangeNotifier {
     } else if (languageCode == 'mr') {
       ct2Downloaded = await CT2ModelManager().isPackDownloaded('mr', 'en') ||
           await CT2ModelManager().isPackDownloaded('hi', 'mr');
+    } else if (languageCode == 'en') {
+      ct2Downloaded = await CT2ModelManager().isPackDownloaded('hi', 'en') ||
+          await CT2ModelManager().isPackDownloaded('mr', 'en');
     }
     
     final translation = mlKitDownloaded || ct2Downloaded;

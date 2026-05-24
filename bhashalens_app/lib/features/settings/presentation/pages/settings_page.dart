@@ -59,17 +59,14 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: const Color(0xFF1C222B),
-          title: const Text('Logout', style: TextStyle(color: Colors.white)),
+          title: const Text('Logout'),
           content: const Text(
             'Are you sure you want to logout? You will need to sign in again to access your saved settings.',
-            style: TextStyle(color: Color(0xFF94A3B8)),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel',
-                  style: TextStyle(color: Color(0xFF94A3B8))),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(true),
@@ -115,12 +112,9 @@ class _SettingsPageState extends State<SettingsPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1C222B),
-        title:
-            const Text('Clear History', style: TextStyle(color: Colors.white)),
+        title: const Text('Clear History'),
         content: const Text(
-            'Are you sure you want to clear all history? This cannot be undone.',
-            style: TextStyle(color: Color(0xFF94A3B8))),
+            'Are you sure you want to clear all history? This cannot be undone.'),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context),
@@ -147,26 +141,28 @@ class _SettingsPageState extends State<SettingsPage> {
     final accessibilityController = Provider.of<AccessibilityController>(context);
     final prefsService = Provider.of<PreferencesService>(context);
 
-    // Theme Colors - Mapped to the SamvadAI Brand Theme
-    const Color bgDark = AppColors.voidBg;
-    const Color cardDark = AppColors.surfaceDark;
-    const Color primaryBlue = AppColors.violetAccent;
-    const Color textGrey = AppColors.slate400;
-    const Color dividerColor = AppColors.borderDark;
+    // Dynamic Theme Colors - Mapped to the SamvadAI Brand Theme
+    final colorScheme = Theme.of(context).colorScheme;
+    final scaffoldBg = Theme.of(context).scaffoldBackgroundColor;
+    final cardBg = colorScheme.surface;
+    final primaryBlue = colorScheme.primary;
+    final textGrey = colorScheme.onSurface.withValues(alpha: 0.6);
+    final dividerColor = colorScheme.outline.withValues(alpha: 0.15);
+    final onSurfaceColor = colorScheme.onSurface;
 
     return Scaffold(
-      backgroundColor: bgDark,
+      backgroundColor: scaffoldBg,
       appBar: AppBar(
-        backgroundColor: bgDark,
+        backgroundColor: scaffoldBg,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios_new, color: onSurfaceColor),
           onPressed: () => Navigator.of(context).maybePop(),
         ),
-        title: const Text(
+        title: Text(
           'Settings',
           style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+              color: onSurfaceColor, fontWeight: FontWeight.bold, fontSize: 20),
         ),
         centerTitle: true,
       ),
@@ -181,9 +177,9 @@ class _SettingsPageState extends State<SettingsPage> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: cardDark,
+                  color: cardBg,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF2D3748)),
+                  border: Border.all(color: dividerColor),
                 ),
                 child: Row(
                   children: [
@@ -201,17 +197,17 @@ class _SettingsPageState extends State<SettingsPage> {
                                     shape: BoxShape.circle),
                               ),
                               const SizedBox(width: 8),
-                              const Text(
+                              Text(
                                 "Account Status: Active",
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: onSurfaceColor,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16),
                               ),
                             ],
                           ),
                           const SizedBox(height: 6),
-                          const Text("BhashaLens App Version 2.1.0",
+                          Text("BhashaLens App Version 2.1.0",
                               style: TextStyle(color: textGrey, fontSize: 13)),
                         ],
                       ),
@@ -220,9 +216,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       width: 50,
                       height: 50,
                       decoration: BoxDecoration(
-                          color: const Color(0xFF1E293B),
+                          color: primaryBlue.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12)),
-                      child: const Icon(Icons.person,
+                      child: Icon(Icons.person,
                           color: primaryBlue, size: 28),
                     ),
                   ],
@@ -237,9 +233,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   return Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: cardDark,
+                      color: cardBg,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: const Color(0xFF2D3748)),
+                      border: Border.all(color: dividerColor),
                     ),
                     child: Row(
                       children: [
@@ -260,8 +256,8 @@ class _SettingsPageState extends State<SettingsPage> {
                             children: [
                               Text(
                                 enabled ? 'Cloud sync: On' : 'Cloud sync: Off',
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                style: TextStyle(
+                                  color: onSurfaceColor,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -271,7 +267,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 enabled
                                     ? 'History and preferences sync when online.'
                                     : 'Cloud sync is currently disabled.',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: textGrey,
                                   fontSize: 13,
                                 ),
@@ -287,7 +283,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 24),
 
               // ACCESSIBILITY CONTROLS
-              const Text(
+              Text(
                 "ACCESSIBILITY CONTROLS",
                 style: TextStyle(
                     color: textGrey,
@@ -298,21 +294,21 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 12),
 
               // Text Size Slider
-              const Text("Text Size",
+              Text("Text Size",
                   style: TextStyle(
-                      color: Colors.white,
+                      color: onSurfaceColor,
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
               const SizedBox(height: 8),
               Row(
                 children: [
-                  const Text("Tt",
+                  Text("Tt",
                       style: TextStyle(color: textGrey, fontSize: 14)),
                   Expanded(
                     child: SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                         activeTrackColor: primaryBlue,
-                        inactiveTrackColor: const Color(0xFF334155),
+                        inactiveTrackColor: colorScheme.outline.withValues(alpha: 0.2),
                         thumbColor: primaryBlue,
                         trackHeight: 4,
                       ),
@@ -325,9 +321,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                   ),
-                  const Text("Tt",
+                  Text("Tt",
                       style: TextStyle(
-                          color: Colors.white,
+                          color: onSurfaceColor,
                           fontSize: 18,
                           fontWeight: FontWeight.bold)),
                 ],
@@ -336,9 +332,9 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
-                  color: cardDark,
+                  color: cardBg,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF2D3748)),
+                  border: Border.all(color: dividerColor),
                 ),
                 child: Column(
                   children: [
@@ -350,7 +346,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       onChanged: (val) =>
                           accessibilityController.toggleThemeMode(),
                     ),
-                    const Divider(height: 1, color: dividerColor),
+                    Divider(height: 1, color: dividerColor),
                     _buildSwitchTile(
                       icon: Icons.visibility,
                       iconColor: primaryBlue,
@@ -359,7 +355,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       onChanged: (val) =>
                           setState(() => _simplifiedInterface = val),
                     ),
-                    const Divider(height: 1, color: dividerColor),
+                    Divider(height: 1, color: dividerColor),
                     _buildSwitchTile(
                       icon: Icons.record_voice_over,
                       iconColor: primaryBlue,
@@ -380,7 +376,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               SnackBar(
                                 content: Text(
                                   'Voice guidance error: $e',
-                                  style: const TextStyle(color: Colors.white),
+                                  style: TextStyle(color: onSurfaceColor),
                                 ),
                                 backgroundColor: const Color(0xFFEF5350),
                                 behavior: SnackBarBehavior.floating,
@@ -391,18 +387,18 @@ class _SettingsPageState extends State<SettingsPage> {
                         }
                       },
                     ),
-                    const Divider(height: 1, color: dividerColor),
+                    Divider(height: 1, color: dividerColor),
                     ListTile(
-                      leading: const Icon(Icons.build_circle_outlined, color: primaryBlue),
-                      title: const Text(
+                      leading: Icon(Icons.build_circle_outlined, color: primaryBlue),
+                      title: Text(
                         "Troubleshoot Voice Systems",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
+                        style: TextStyle(color: onSurfaceColor, fontSize: 16),
                       ),
-                      subtitle: const Text(
+                      subtitle: Text(
                         "Click here if voice commands stop working",
                         style: TextStyle(color: textGrey, fontSize: 12),
                       ),
-                      trailing: const Icon(Icons.refresh, color: textGrey),
+                      trailing: Icon(Icons.refresh, color: textGrey),
                       onTap: () async {
                         try {
                           await accessibilityController.reinitializeServices();
@@ -434,7 +430,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 24),
 
               // LANGUAGES & TRANSLATION
-              const Text(
+              Text(
                 "LANGUAGES & TRANSLATION",
                 style: TextStyle(
                     color: textGrey,
@@ -445,9 +441,9 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 12),
               Container(
                 decoration: BoxDecoration(
-                  color: cardDark,
+                  color: cardBg,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF2D3748)),
+                  border: Border.all(color: dividerColor),
                 ),
                 child: Column(
                   children: [
@@ -456,14 +452,14 @@ class _SettingsPageState extends State<SettingsPage> {
                       subtitle: "English",
                       onTap: () => _navigateTo("app_language"),
                     ),
-                    const Divider(height: 1, color: dividerColor),
+                    Divider(height: 1, color: dividerColor),
                     _buildNavTile(
                       title: "Default Translation",
                       subtitle:
                           "${prefsService.defaultSourceLang.toUpperCase()} \u2192 ${prefsService.defaultTargetLang.toUpperCase()}",
                       onTap: () => _navigateTo("default_translation"),
                     ),
-                    const Divider(height: 1, color: dividerColor),
+                    Divider(height: 1, color: dividerColor),
                     _buildSwitchTile(
                       title: "Auto-detect Language",
                       value: prefsService.autoTranslate,
@@ -477,7 +473,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 24),
 
               // AUDIO & OFFLINE
-              const Text(
+              Text(
                 "AUDIO & OFFLINE",
                 style: TextStyle(
                     color: textGrey,
@@ -488,9 +484,9 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 12),
               Container(
                 decoration: BoxDecoration(
-                  color: cardDark,
+                  color: cardBg,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF2D3748)),
+                  border: Border.all(color: dividerColor),
                 ),
                 child: Column(
                   children: [
@@ -500,13 +496,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       onChanged: (val) => setState(() => _offlineMode = val),
                       hideIcon: true,
                     ),
-                    const Divider(height: 1, color: dividerColor),
+                    Divider(height: 1, color: dividerColor),
                     _buildNavTile(
                       title: "Offline Language Packs",
                       subtitle: "Manage downloads",
                       onTap: () => _navigateTo("manage_packs"),
                     ),
-                    const Divider(height: 1, color: dividerColor),
+                    Divider(height: 1, color: dividerColor),
                     _buildSwitchTile(
                       title: "Wi-Fi Only Downloads",
                       value: _wifiOnlyDownloads,
@@ -520,7 +516,7 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 24),
 
               // DATA & SUPPORT
-              const Text(
+              Text(
                 "DATA & SUPPORT",
                 style: TextStyle(
                     color: textGrey,
@@ -531,9 +527,9 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(height: 12),
               Container(
                 decoration: BoxDecoration(
-                  color: cardDark,
+                  color: cardBg,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF2D3748)),
+                  border: Border.all(color: dividerColor),
                 ),
                 child: Column(
                   children: [
@@ -548,13 +544,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         );
                       },
                     ),
-                    const Divider(height: 1, color: dividerColor),
+                    Divider(height: 1, color: dividerColor),
                     _buildNavTile(
                       icon: Icons.help_outline,
                       title: "Help & Support",
                       onTap: () => _navigateTo("help_support"),
                     ),
-                    const Divider(height: 1, color: dividerColor),
+                    Divider(height: 1, color: dividerColor),
                     _buildActionTile(
                       icon: Icons.delete_sweep_outlined,
                       iconColor: const Color(0xFFEF5350),
@@ -562,7 +558,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       titleColor: const Color(0xFFEF5350),
                       onTap: () => _navigateTo("clear_history"),
                     ),
-                    const Divider(height: 1, color: dividerColor),
+                    Divider(height: 1, color: dividerColor),
                     _buildActionTile(
                       icon: Icons.logout,
                       iconColor: const Color(0xFFEF5350),
@@ -590,6 +586,11 @@ class _SettingsPageState extends State<SettingsPage> {
     required ValueChanged<bool> onChanged,
     bool hideIcon = false,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final onSurfaceColor = colorScheme.onSurface;
+    final textGrey = colorScheme.onSurface.withValues(alpha: 0.6);
+    final iconBgColor = (iconColor ?? onSurfaceColor).withValues(alpha: 0.1);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
@@ -598,10 +599,10 @@ class _SettingsPageState extends State<SettingsPage> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: (iconColor ?? Colors.white).withValues(alpha: 0.1),
+                color: iconBgColor,
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: iconColor ?? Colors.white, size: 20),
+              child: Icon(icon, color: iconColor ?? onSurfaceColor, size: 20),
             ),
             const SizedBox(width: 16),
           ],
@@ -610,20 +611,20 @@ class _SettingsPageState extends State<SettingsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title,
-                    style: const TextStyle(color: Colors.white, fontSize: 16)),
+                    style: TextStyle(color: onSurfaceColor, fontSize: 16)),
                 if (subtitle != null)
                   Text(subtitle,
-                      style: const TextStyle(
-                          color: Color(0xFF94A3B8), fontSize: 12)),
+                      style: TextStyle(
+                          color: textGrey, fontSize: 12)),
               ],
             ),
           ),
           Switch(
             value: value,
             onChanged: onChanged,
-            activeTrackColor: const Color(0xFF136DEC),
-            inactiveThumbColor: Colors.white,
-            inactiveTrackColor: const Color(0xFF334155),
+            activeTrackColor: colorScheme.primary,
+            inactiveThumbColor: colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+            inactiveTrackColor: colorScheme.outline.withValues(alpha: 0.1),
           ),
         ],
       ),
@@ -636,6 +637,10 @@ class _SettingsPageState extends State<SettingsPage> {
     String? subtitle,
     required VoidCallback onTap,
   }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final onSurfaceColor = colorScheme.onSurface;
+    final textGrey = colorScheme.onSurface.withValues(alpha: 0.6);
+
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -646,10 +651,10 @@ class _SettingsPageState extends State<SettingsPage> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF94A3B8).withValues(alpha: 0.1),
+                  color: textGrey.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: Colors.white, size: 20),
+                child: Icon(icon, color: onSurfaceColor, size: 20),
               ),
               const SizedBox(width: 16),
             ],
@@ -659,17 +664,17 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   Text(title,
                       style:
-                          const TextStyle(color: Colors.white, fontSize: 16)),
+                          TextStyle(color: onSurfaceColor, fontSize: 16)),
                   if (subtitle != null)
                     Text(subtitle,
-                        style: const TextStyle(
-                            color: Color(0xFF136DEC),
+                        style: TextStyle(
+                            color: colorScheme.primary,
                             fontSize: 12,
                             fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right, color: Color(0xFF94A3B8), size: 24),
+            Icon(Icons.chevron_right, color: textGrey, size: 24),
           ],
         ),
       ),

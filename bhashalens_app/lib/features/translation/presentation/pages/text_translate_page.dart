@@ -386,6 +386,15 @@ class _TextTranslatePageState extends State<TextTranslatePage> {
             ),
             isExpanded: true,
             onChanged: onChanged,
+            selectedItemBuilder: (BuildContext context) {
+              return languages.entries.map((e) {
+                return Text(
+                  e.value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                );
+              }).toList();
+            },
             items: languages.entries.map((e) {
               final sizeStr = VoiceTranslationService.getLanguagePackSize(e.key);
               final displayText = sizeStr.isNotEmpty ? '${e.value} ($sizeStr)' : e.value;

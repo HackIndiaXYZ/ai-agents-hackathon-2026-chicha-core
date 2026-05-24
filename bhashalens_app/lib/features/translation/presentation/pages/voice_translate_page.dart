@@ -24,8 +24,8 @@ class _VoiceTranslatePageState extends State<VoiceTranslatePage> {
   }
 
   Future<void> _refreshAllOfflineStatus(VoiceTranslationService vs) async {
-    await vs.checkLanguageReadiness(vs.userALanguage);
-    await vs.checkLanguageReadiness(vs.userBLanguage);
+    await vs.refreshOfflineStatus(vs.userALanguage);
+    await vs.refreshOfflineStatus(vs.userBLanguage);
   }
 
   String convertLanguageCodeToName(String languageCode) {
@@ -440,6 +440,15 @@ class _VoiceTranslatePageState extends State<VoiceTranslatePage> {
               _checkAndPromptOfflineModels(val);
             }
           },
+          selectedItemBuilder: (BuildContext context) {
+            return VoiceTranslationService.supportedLanguages.entries.map((e) {
+              return Text(
+                e.value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              );
+            }).toList();
+          },
           items: VoiceTranslationService.supportedLanguages.entries.map((e) {
             final vs = context.read<VoiceTranslationService>();
             final status = vs.offlineStatus[e.key];
@@ -732,7 +741,8 @@ class _VoiceTranslatePageState extends State<VoiceTranslatePage> {
   /// Check offline readiness when a language is selected and prompt if needed
   void _checkAndPromptOfflineModels(String languageCode) async {
     final vs = context.read<VoiceTranslationService>();
-    final status = await vs.checkLanguageReadiness(languageCode);
+    await vs.refreshOfflineStatus(languageCode);
+    final status = vs.offlineStatus[languageCode] ?? await vs.checkLanguageReadiness(languageCode);
 
     if (!mounted) return;
 
