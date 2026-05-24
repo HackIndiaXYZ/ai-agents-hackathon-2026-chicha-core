@@ -64,6 +64,7 @@ class TranslationHistoryEntry {
       if (value == 'onDevice' || value == 'ml_kit') return ProcessingBackend.mlKit;
       if (value == 'awsCloud' || value == 'aws_bedrock') return ProcessingBackend.gemini;
       if (value == 'gemini') return ProcessingBackend.gemini;
+      if (value == 'ct2') return ProcessingBackend.ct2;
       
       return ProcessingBackend.values.firstWhere(
         (e) => e.name == value,
@@ -108,5 +109,6 @@ enum TranslationMode {
 enum ProcessingBackend {
   mlKit,
   gemini,
+  ct2,
   error,
 }

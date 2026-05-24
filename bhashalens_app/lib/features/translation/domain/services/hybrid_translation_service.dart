@@ -4,6 +4,8 @@ import 'package:bhashalens_app/features/translation/domain/services/smart_hybrid
 import 'package:flutter/foundation.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:bhashalens_app/features/translation/data/services/ml_kit_translation_service.dart';
+import 'package:bhashalens_app/features/translation/data/services/offline_translation_service.dart';
+import 'package:bhashalens_app/features/translation/data/models/language_pair.dart';
 import 'package:bhashalens_app/features/explain_simplify/data/services/gemini_service.dart';
 import 'package:bhashalens_app/core/database/local_storage_service.dart';
 import 'package:bhashalens_app/debug_session_log.dart';
@@ -99,20 +101,44 @@ class HybridTranslationService {
         );
       }
 
-      // Use ML Kit translation (either as primary choice or fallback from Gemini)
-      final onDeviceResult = await _onDeviceTranslation.translate(
-        text: sourceText,
-        sourceLanguage: sourceLang,
-        targetLanguage: targetLang,
-      );
+      String? onDeviceResult;
+      ProcessingBackend backendUsed = ProcessingBackend.mlKit;
+      
+      final srcLanguage = _parseLanguage(sourceLang);
+      final tgtLanguage = _parseLanguage(targetLang);
+      final isCustomPairSupported = srcLanguage != null && tgtLanguage != null;
+      
+      if (isCustomPairSupported) {
+        debugPrint('HybridTranslationService: Routing to CTranslate2 for direct $sourceLang -> $targetLang translation');
+        final ct2Result = await OfflineTranslationService().translate(
+          text: sourceText,
+          sourceLang: srcLanguage,
+          targetLang: tgtLanguage,
+        );
+        if (ct2Result.success) {
+          onDeviceResult = ct2Result.translatedText;
+          backendUsed = ProcessingBackend.ct2;
+        }
+      }
+      
+      if (onDeviceResult == null) {
+        // Fallback to ML Kit translation
+        debugPrint('HybridTranslationService: Routing to ML Kit for $sourceLang -> $targetLang translation');
+        onDeviceResult = await _onDeviceTranslation.translate(
+          text: sourceText,
+          sourceLanguage: sourceLang,
+          targetLanguage: targetLang,
+        );
+        backendUsed = ProcessingBackend.mlKit;
+      }
 
       final processingTime = DateTime.now().difference(startTime);
       final translatedText = onDeviceResult ?? '';
 
       final result = HybridTranslationResult(
         translatedText: translatedText,
-        confidence: 0.85, // ML Kit doesn't provide confidence
-        backend: ProcessingBackend.mlKit,
+        confidence: backendUsed == ProcessingBackend.ct2 ? 0.92 : 0.85,
+        backend: backendUsed,
         processingTimeMs: processingTime.inMilliseconds,
         success: true,
       );
@@ -124,7 +150,7 @@ class HybridTranslationService {
           targetText: translatedText,
           sourceLang: sourceLang,
           targetLang: targetLang,
-          backend: 'ml_kit',
+          backend: backendUsed.name,
         );
       }
 
@@ -132,7 +158,7 @@ class HybridTranslationService {
       DebugSessionLog.log(
         'hybrid_translation_service.dart:translateText',
         'translate_done',
-        data: {'backend': 'mlKit', 'success': translatedText.isNotEmpty},
+        data: {'backend': backendUsed.name, 'success': translatedText.isNotEmpty},
         hypothesisId: 'H3',
       );
       // #endregion
@@ -430,6 +456,14 @@ class HybridTranslationService {
       debugPrint('Error saving local history for sync: $e');
       return 0;
     });
+  }
+
+  Language? _parseLanguage(String code) {
+    final clean = code.toLowerCase().trim();
+    if (clean == 'en' || clean == 'english') return Language.english;
+    if (clean == 'hi' || clean == 'hindi') return Language.hindi;
+    if (clean == 'mr' || clean == 'marathi') return Language.marathi;
+    return null;
   }
 }
 

@@ -2,7 +2,7 @@ import 'package:bhashalens_app/features/history_saved/data/models/translation_hi
 import 'package:flutter/material.dart';
 
 /// Shows a small chip indicating which backend processed the result:
-/// "Powered by AWS Bedrock", "Powered by Gemini", or "Offline".
+/// "Powered by AWS Bedrock", "Powered by Gemini", "Offline (Fast)" or "Offline".
 class BackendIndicatorWidget extends StatelessWidget {
   /// Prefer [backend] when available (from hybrid result enums).
   final ProcessingBackend? backend;
@@ -22,6 +22,8 @@ class BackendIndicatorWidget extends StatelessWidget {
         return 'Powered by Gemini';
       case ProcessingBackend.mlKit:
         return 'Offline';
+      case ProcessingBackend.ct2:
+        return 'Offline (Fast)';
       case ProcessingBackend.error:
         return 'Service Error';
     }
@@ -37,6 +39,7 @@ class BackendIndicatorWidget extends StatelessWidget {
       return 'Powered by Gemini (Strict)';
     }
     if (lower == 'gemini') return 'Powered by Gemini';
+    if (lower == 'ct2') return 'Offline (Fast)';
     if (lower == 'ml' || lower == 'ml_kit' || lower == 'offline') {
       return 'Offline';
     }

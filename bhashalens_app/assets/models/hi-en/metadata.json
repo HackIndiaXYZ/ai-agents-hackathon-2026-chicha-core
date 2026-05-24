@@ -1,0 +1,14 @@
+{
+  "model_architecture": "marian_student_distilled",
+  "precision": "int8",
+  "vocab_size": 32000,
+  "language_pairs": [
+    "hi-en",
+    "en-hi",
+    "mr-en",
+    "en-mr",
+    "hi-mr",
+    "mr-hi"
+  ],
+  "size_bytes": 15499264
+}

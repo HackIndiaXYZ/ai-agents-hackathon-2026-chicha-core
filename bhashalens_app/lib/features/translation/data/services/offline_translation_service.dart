@@ -3,7 +3,7 @@ import 'package:bhashalens_app/features/translation/data/models/language_pair.da
 import 'package:bhashalens_app/features/translation/data/models/translation_result.dart';
 import 'package:bhashalens_app/features/history_saved/data/models/translation_history_entry.dart';
 import 'package:bhashalens_app/features/translation/domain/services/translation_engine.dart';
-import 'package:bhashalens_app/features/translation/data/services/tflite_translation_engine.dart';
+import 'package:bhashalens_app/features/translation/data/services/ct2_translation_engine.dart';
 import 'package:bhashalens_app/core/database/encrypted_local_storage.dart';
 
 /// Offline translation service with caching and history management
@@ -15,7 +15,7 @@ class OfflineTranslationService {
   // Singleton pattern
   static final OfflineTranslationService _instance =
       OfflineTranslationService._internal(
-    TFLiteTranslationEngine(),
+    CT2TranslationEngine(),
     EncryptedLocalStorage(),
   );
 
@@ -95,7 +95,7 @@ class OfflineTranslationService {
       debugPrint('Translation service error: $e');
       return TranslationResult.failure(
         error: e.toString(),
-        backend: ProcessingBackend.mlKit,
+        backend: ProcessingBackend.ct2,
         processingTimeMs: 0,
       );
     }

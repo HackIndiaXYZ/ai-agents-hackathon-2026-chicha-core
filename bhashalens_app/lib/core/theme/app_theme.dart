@@ -4,32 +4,50 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 class AppTheme {
-  /// Light theme configuration
+  /// Light theme configuration using SamvadAI brand identity
   static ThemeData get lightTheme {
-    final textTheme = GoogleFonts.sourceSans3TextTheme().copyWith(
-      displayLarge: GoogleFonts.lexend(
+    final textTheme = GoogleFonts.loraTextTheme().copyWith(
+      displayLarge: GoogleFonts.sora(
         fontWeight: FontWeight.bold,
-        color: AppColors.slate900,
+        color: AppColors.indigoPrimary,
+        letterSpacing: -0.04 * 57,
       ),
-      displayMedium: GoogleFonts.lexend(
+      displayMedium: GoogleFonts.sora(
         fontWeight: FontWeight.bold,
-        color: AppColors.slate900,
+        color: AppColors.indigoPrimary,
+        letterSpacing: -0.04 * 45,
       ),
-      displaySmall: GoogleFonts.lexend(
+      displaySmall: GoogleFonts.sora(
         fontWeight: FontWeight.bold,
-        color: AppColors.slate900,
+        color: AppColors.indigoPrimary,
+        letterSpacing: -0.04 * 36,
       ),
-      headlineLarge: GoogleFonts.lexend(
+      headlineLarge: GoogleFonts.sora(
         fontWeight: FontWeight.w600,
-        color: AppColors.slate900,
+        color: AppColors.indigoPrimary,
+        letterSpacing: -0.04 * 32,
       ),
-      headlineMedium: GoogleFonts.lexend(
+      headlineMedium: GoogleFonts.sora(
         fontWeight: FontWeight.w600,
-        color: AppColors.slate900,
+        color: AppColors.indigoPrimary,
+        letterSpacing: -0.04 * 28,
       ),
-      headlineSmall: GoogleFonts.lexend(
+      headlineSmall: GoogleFonts.sora(
         fontWeight: FontWeight.w600,
-        color: AppColors.slate900,
+        color: AppColors.indigoPrimary,
+        letterSpacing: -0.04 * 24,
+      ),
+      titleLarge: GoogleFonts.sora(
+        fontWeight: FontWeight.w600,
+        color: AppColors.indigoPrimary,
+      ),
+      titleMedium: GoogleFonts.sora(
+        fontWeight: FontWeight.w500,
+        color: AppColors.indigoPrimary,
+      ),
+      titleSmall: GoogleFonts.sora(
+        fontWeight: FontWeight.w500,
+        color: AppColors.indigoPrimary,
       ),
     );
 
@@ -40,18 +58,18 @@ class AppTheme {
 
       // Color Scheme
       colorScheme: const ColorScheme.light(
-        primary: AppColors.primary,
-        onPrimary: AppColors.textOnPrimary,
-        primaryContainer: AppColors.blue100,
-        onPrimaryContainer: AppColors.blue700,
-        secondary: AppColors.slate600,
+        primary: AppColors.indigoPrimary,
+        onPrimary: Colors.white,
+        primaryContainer: Color(0xFFE2E0FF), 
+        onPrimaryContainer: AppColors.indigoPrimary,
+        secondary: AppColors.violetAccent,
         onSecondary: Colors.white,
-        secondaryContainer: AppColors.slate100,
-        onSecondaryContainer: AppColors.slate900,
-        surface: AppColors.surface,
-        onSurface: AppColors.slate900,
-        surfaceContainerHighest: AppColors.slate100,
-        onSurfaceVariant: AppColors.slate500,
+        secondaryContainer: Color(0xFFF1F0FF),
+        onSecondaryContainer: AppColors.indigoPrimary,
+        surface: Colors.white,
+        onSurface: AppColors.indigoPrimary,
+        surfaceContainerHighest: AppColors.warmWhiteBg,
+        onSurfaceVariant: AppColors.slate600,
         error: AppColors.error,
         onError: Colors.white,
         outline: AppColors.border,
@@ -60,21 +78,21 @@ class AppTheme {
 
       // App Bar Theme
       appBarTheme: AppBarTheme(
-        backgroundColor: AppColors.surface,
-        foregroundColor: AppColors.slate900,
+        backgroundColor: AppColors.warmWhiteBg,
+        foregroundColor: AppColors.indigoPrimary,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: GoogleFonts.lexend(
-          color: AppColors.slate900,
+        titleTextStyle: GoogleFonts.sora(
+          color: AppColors.indigoPrimary,
           fontSize: 18,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.bold,
         ),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
 
       // Card Theme
       cardTheme: CardThemeData(
-        color: AppColors.surface,
+        color: Colors.white,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -85,14 +103,12 @@ class AppTheme {
       // Elevated Button Theme
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.textOnPrimary,
+          backgroundColor: AppColors.indigoPrimary,
+          foregroundColor: Colors.white,
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          textStyle:
-              GoogleFonts.lexend(fontSize: 16, fontWeight: FontWeight.w600),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          textStyle: GoogleFonts.sora(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
 
@@ -110,44 +126,61 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+          borderSide: const BorderSide(color: AppColors.indigoPrimary, width: 2),
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
     );
   }
 
-  /// Dark theme configuration
+  /// Dark theme configuration using SamvadAI brand identity
   static ThemeData get darkTheme {
-    final textTheme = GoogleFonts.sourceSans3TextTheme()
+    final textTheme = GoogleFonts.loraTextTheme()
         .apply(
           bodyColor: AppColors.textDark,
           displayColor: AppColors.textDark,
         )
         .copyWith(
-          displayLarge: GoogleFonts.lexend(
+          displayLarge: GoogleFonts.sora(
             fontWeight: FontWeight.bold,
             color: AppColors.textDark,
+            letterSpacing: -0.04 * 57,
           ),
-          displayMedium: GoogleFonts.lexend(
+          displayMedium: GoogleFonts.sora(
             fontWeight: FontWeight.bold,
             color: AppColors.textDark,
+            letterSpacing: -0.04 * 45,
           ),
-          displaySmall: GoogleFonts.lexend(
+          displaySmall: GoogleFonts.sora(
             fontWeight: FontWeight.bold,
             color: AppColors.textDark,
+            letterSpacing: -0.04 * 36,
           ),
-          headlineLarge: GoogleFonts.lexend(
+          headlineLarge: GoogleFonts.sora(
+            fontWeight: FontWeight.w600,
+            color: AppColors.textDark,
+            letterSpacing: -0.04 * 32,
+          ),
+          headlineMedium: GoogleFonts.sora(
+            fontWeight: FontWeight.w600,
+            color: AppColors.textDark,
+            letterSpacing: -0.04 * 28,
+          ),
+          headlineSmall: GoogleFonts.sora(
+            fontWeight: FontWeight.w600,
+            color: AppColors.textDark,
+            letterSpacing: -0.04 * 24,
+          ),
+          titleLarge: GoogleFonts.sora(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
           ),
-          headlineMedium: GoogleFonts.lexend(
-            fontWeight: FontWeight.w600,
+          titleMedium: GoogleFonts.sora(
+            fontWeight: FontWeight.w500,
             color: AppColors.textDark,
           ),
-          headlineSmall: GoogleFonts.lexend(
-            fontWeight: FontWeight.w600,
+          titleSmall: GoogleFonts.sora(
+            fontWeight: FontWeight.w500,
             color: AppColors.textDark,
           ),
         );
@@ -159,37 +192,33 @@ class AppTheme {
 
       // Color Scheme
       colorScheme: const ColorScheme.dark(
-        primary: AppColors.primary,
-        onPrimary: AppColors.textOnPrimary,
-        primaryContainer: Color(0xFF1E3A8A), // Dark blue
+        primary: AppColors.violetAccent,
+        onPrimary: AppColors.voidBg,
+        primaryContainer: AppColors.indigoPrimary,
         onPrimaryContainer: Colors.white,
-
-        secondary: AppColors.slate400,
-        onSecondary: AppColors.slate950,
-        secondaryContainer: AppColors.slate800,
+        secondary: AppColors.tealAccent,
+        onSecondary: AppColors.voidBg,
+        secondaryContainer: AppColors.surfaceDark,
         onSecondaryContainer: Colors.white,
-
         surface: AppColors.surfaceDark,
         onSurface: AppColors.textDark,
-        surfaceContainerHighest: AppColors.backgroundDark,
+        surfaceContainerHighest: AppColors.voidBg,
         onSurfaceVariant: AppColors.slate400,
-
         error: AppColors.error,
         onError: Colors.white,
-
         outline: AppColors.borderDark,
       ),
 
       // App Bar Theme
       appBarTheme: AppBarTheme(
-        backgroundColor: AppColors.backgroundDark,
+        backgroundColor: AppColors.voidBg,
         foregroundColor: AppColors.textDark,
         elevation: 0,
         centerTitle: true,
-        titleTextStyle: GoogleFonts.lexend(
+        titleTextStyle: GoogleFonts.sora(
           color: AppColors.textDark,
           fontSize: 18,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.bold,
         ),
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
@@ -207,21 +236,19 @@ class AppTheme {
       // Elevated Button Theme
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.textOnPrimary,
+          backgroundColor: AppColors.violetAccent,
+          foregroundColor: AppColors.voidBg,
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          textStyle:
-              GoogleFonts.lexend(fontSize: 16, fontWeight: FontWeight.w600),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          textStyle: GoogleFonts.sora(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
 
       // Input Decoration Theme
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.slate900,
+        fillColor: const Color(0xFF141432),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.borderDark),
@@ -232,10 +259,9 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+          borderSide: const BorderSide(color: AppColors.violetAccent, width: 2),
         ),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
     );
   }
@@ -274,7 +300,6 @@ class CustomColors extends ThemeExtension<CustomColors> {
     );
   }
 
-  // Helper getter to use these colors with Theme.of(context).colorScheme.custom.success
   static CustomColors of(BuildContext context) =>
       Theme.of(context).extension<CustomColors>()!;
 }

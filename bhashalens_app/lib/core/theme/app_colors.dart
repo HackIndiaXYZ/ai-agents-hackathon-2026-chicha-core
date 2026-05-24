@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
-/// App color palette based on Orange theme with complementary colors
+/// App color palette based on SamvadAI brand design system
 class AppColors {
-  // --- PRIMARY THEME COLORS ---
-  // High-Contrast Slate (Backgrounds & Text)
+  // --- CORE BRAND COLORS ---
+  static const Color voidBg = Color(0xFF0B0B19);        // Dark mode main background
+  static const Color indigoPrimary = Color(0xFF1E1654); // Primary theme color
+  static const Color violetAccent = Color(0xFF888CF6);  // Accent A
+  static const Color amberAccent = Color(0xFFF59E0B);   // Accent B
+  static const Color tealAccent = Color(0xFF0D9488);    // Accent C
+  static const Color warmWhiteBg = Color(0xFFFAF9F5);   // Light mode main background
+
+  // --- GRAYSCALE SLATE PALETTE ---
   static const Color slate50 = Color(0xFFF8FAFC);
   static const Color slate100 = Color(0xFFF1F5F9);
   static const Color slate200 = Color(0xFFE2E8F0);
@@ -16,28 +23,21 @@ class AppColors {
   static const Color slate900 = Color(0xFF0F172A);
   static const Color slate950 = Color(0xFF020617);
 
-  // Deep Blue (Primary Brand Color)
-  static const Color blue50 = Color(0xFFEFF6FF);
-  static const Color blue100 = Color(0xFFDBEAFE);
-  static const Color blue500 = Color(0xFF3B82F6);
-  static const Color blue600 = Color(0xFF2563EB);
-  static const Color blue700 = Color(0xFF1D4ED8);
+  // --- BRAND SCHEME MAPS ---
+  static const Color primary = indigoPrimary;
+  static const Color primaryLight = violetAccent;
+  static const Color primaryDark = voidBg;
 
-  // Standardized Semantic Names
-  static const Color primary = blue600;
-  static const Color primaryLight = blue500;
-  static const Color primaryDark = blue700;
+  static const Color secondary = violetAccent;
+  static const Color secondaryLight = violetAccent;
+  static const Color secondaryDark = indigoPrimary;
 
-  static const Color secondary = slate600;
-  static const Color secondaryLight = slate400;
-  static const Color secondaryDark = slate800;
-
-  static const Color background = slate50;
-  static const Color backgroundDark = slate950;
+  static const Color background = warmWhiteBg;
+  static const Color backgroundDark = voidBg;
   static const Color surface = Colors.white;
-  static const Color surfaceDark = slate900;
+  static const Color surfaceDark = Color(0xFF161633); // Sleek Indigo-void container for cards
 
-  static const Color text = slate900;
+  static const Color text = Color(0xFF0F172A);
   static const Color textLight = slate500;
   static const Color textMuted = slate500;
   static const Color textOnPrimary = Colors.white;
@@ -45,23 +45,30 @@ class AppColors {
   static const Color textDark = Colors.white;
 
   static const Color border = slate200;
-  static const Color borderDark = slate800;
+  static const Color borderDark = Color(0xFF28284E);
   static const Color divider = slate200;
-  static const Color dividerDark = slate800;
+  static const Color dividerDark = Color(0xFF28284E);
 
   // States
-  static const Color success = Color(0xFF10B981);
+  static const Color success = tealAccent;
   static const Color error = Color(0xFFEF4444);
-  static const Color warning = Color(0xFFF59E0B);
-  static const Color info = Color(0xFF3B82F6);
+  static const Color warning = amberAccent;
+  static const Color info = violetAccent;
 
   static const Color sosRed = Color(0xFFEF4444);
 
   // Layout Helpers
-  static const Color shadow = Color(0x1A000000); // 10% black
-  static const Color overlay = Color(0x80000000); // 50% black
+  static const Color shadow = Color(0x1A000000); 
+  static const Color overlay = Color(0x80000000); 
+
+  // --- LEGACY BACKWARD LINKAGE FOR COMPATIBILITY ---
+  static const Color blue50 = Color(0xFFF1F0FF);        // Mapped to soft Violet bg
+  static const Color blue100 = Color(0xFFE2E0FF);       // Mapped to soft Violet container
+  static const Color blue500 = violetAccent;            // Mapped to Violet Accent
+  static const Color blue600 = indigoPrimary;           // Mapped to Indigo Primary
+  static const Color blue700 = voidBg;                  // Mapped to Void Dark
 
   // Gradients for glassmorphism and accents
-  static const List<Color> blueGradient = [blue700, blue500];
-  static const List<Color> darkGradient = [slate900, slate800];
+  static const List<Color> blueGradient = [indigoPrimary, violetAccent];
+  static const List<Color> darkGradient = [voidBg, Color(0xFF161633)];
 }
