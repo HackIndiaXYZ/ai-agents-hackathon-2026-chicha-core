@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:bhashalens_app/features/history_saved/domain/services/export_service.dart';
 import 'package:bhashalens_app/core/network/aws_client.dart';
+import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 /// Dialog to export history/saved data via AWS. Opens presigned download URL
 /// when cloud sync is enabled; shows message when disabled.
@@ -116,9 +117,9 @@ class _ExportDataDialogState extends State<ExportDataDialog> {
 
   @override
   Widget build(BuildContext context) {
-    const cardDark = Color(0xFF1C222B);
-    const textGrey = Color(0xFF94A3B8);
-    const primaryBlue = Color(0xFF136DEC);
+    const cardDark = AppColors.surfaceDark;
+    const textGrey = AppColors.slate400;
+    const primaryBlue = AppColors.violetAccent;
 
     return AlertDialog(
       backgroundColor: cardDark,

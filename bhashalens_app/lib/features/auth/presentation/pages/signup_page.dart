@@ -1,6 +1,7 @@
 import 'package:bhashalens_app/features/auth/domain/services/firebase_auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -118,12 +119,10 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    const Color bgDark = Color(0xFF101822);
-    const Color cardDark = Color(0xFF1E293B);
-    const Color primaryTeal = Color(
-      0xFF26C6DA,
-    ); // Using consistent Primary color
-    const Color textGrey = Color(0xFF9DA8B9);
+    const Color bgDark = AppColors.voidBg;
+    const Color cardDark = AppColors.surfaceDark;
+    const Color primaryTeal = AppColors.violetAccent; // Using consistent Primary color
+    const Color textGrey = AppColors.slate400;
 
     return Scaffold(
       backgroundColor: bgDark,
@@ -248,14 +247,12 @@ class _SignupPageState extends State<SignupPage> {
               ElevatedButton(
                 onPressed: _isLoading ? null : _signUp,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(
-                    0xFF136DEC,
-                  ), // Slightly darker blue for Signup as per mockup
+                  backgroundColor: AppColors.violetAccent, // Brand primary accent for signup
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: const StadiumBorder(),
                   elevation: 8,
-                  shadowColor: const Color(0xFF136DEC).withValues(alpha: 0.4),
+                  shadowColor: AppColors.violetAccent.withValues(alpha: 0.4),
                 ),
                 child: _isLoading
                     ? const SizedBox(

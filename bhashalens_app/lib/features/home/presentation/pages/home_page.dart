@@ -6,6 +6,7 @@ import 'package:bhashalens_app/widgets/accessibility_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bhashalens_app/features/translation/domain/services/voice_translation_service.dart';
+import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,11 +22,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0F172A),
+        backgroundColor: AppColors.voidBg,
         elevation: 0,
         title: Row(
           children: [
-            Icon(Icons.translate, color: Colors.blue[400]),
+            const Icon(Icons.translate, color: AppColors.violetAccent),
             const SizedBox(width: 8),
             const Text(
               'BhashaLens',

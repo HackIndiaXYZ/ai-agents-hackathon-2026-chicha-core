@@ -13,6 +13,7 @@ import 'package:bhashalens_app/features/translation/domain/services/voice_transl
 import 'package:bhashalens_app/features/explain_simplify/data/services/gemini_service.dart';
 
 import 'package:bhashalens_app/widgets/common_bottom_nav_bar.dart';
+import 'package:bhashalens_app/core/theme/app_colors.dart';
 import 'package:bhashalens_app/core/ocr_extractor.dart';
 
 class ExplainModePage extends StatefulWidget {
@@ -407,7 +408,7 @@ class _ExplainModePageState extends State<ExplainModePage>
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E293B),
+      backgroundColor: AppColors.surfaceDark,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -474,13 +475,13 @@ class _ExplainModePageState extends State<ExplainModePage>
 
   @override
   Widget build(BuildContext context) {
-    // Mockup Colors
-    const Color bgDark = Color(0xFF101822);
-    const Color cardDark = Color(0xFF1C2027);
-    const Color primaryBlue = Color(0xFF136DEC);
-    const Color textGrey = Color(0xFF9DA8B9);
-    const Color accentWarning = Color(0xFFFF9800);
-    const Color accentDanger = Color(0xFFEF5350);
+    // Unified Brand Colors
+    const Color bgDark = AppColors.voidBg;
+    const Color cardDark = AppColors.surfaceDark;
+    const Color primaryBlue = AppColors.violetAccent;
+    const Color textGrey = AppColors.slate400;
+    const Color accentWarning = AppColors.amberAccent;
+    const Color accentDanger = AppColors.sosRed;
 
     return Scaffold(
       backgroundColor: bgDark,

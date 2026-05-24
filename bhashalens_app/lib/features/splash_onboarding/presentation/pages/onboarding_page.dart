@@ -2,6 +2,7 @@ import 'package:flutter/material.dart'; // Keep material.dart for other widgets
 import 'package:carousel_slider/carousel_slider.dart'; // For swipeable tutorial cards
 import 'package:bhashalens_app/core/database/local_storage_service.dart'; // Import LocalStorageService
 import 'package:provider/provider.dart'; // Import Provider
+import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -120,7 +121,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
           'BhashaLens',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.bold,
-            color: Colors.blueAccent,
+            color: AppColors.violetAccent,
           ),
         ),
         const SizedBox(height: 8),
@@ -198,7 +199,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget _buildFeatureRow(IconData icon, String title, String description) {
     return Row(
       children: [
-        Icon(icon, size: 30, color: Colors.blueAccent),
+        Icon(icon, size: 30, color: AppColors.violetAccent),
         const SizedBox(width: 16),
         Expanded(
           child: Column(
@@ -283,7 +284,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.symmetric(horizontal: 5.0),
                   decoration: BoxDecoration(
-                    color: Colors.blue.withValues(alpha: 0.1),
+                    color: AppColors.violetAccent.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -292,7 +293,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       Icon(
                         slide['icon'] as IconData,
                         size: 50,
-                        color: Colors.blueAccent,
+                        color: AppColors.violetAccent,
                       ),
                       const SizedBox(height: 16),
                       Padding(
@@ -330,7 +331,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   color:
                       (Theme.of(context).brightness == Brightness.dark
                               ? Colors.white
-                              : Colors.blueAccent)
+                              : AppColors.violetAccent)
                           .withValues(
                             alpha: _currentTutorialIndex == entry.key
                                 ? 0.9
@@ -359,7 +360,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 15),
-              backgroundColor: Colors.blueAccent,
+              backgroundColor: AppColors.violetAccent,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),

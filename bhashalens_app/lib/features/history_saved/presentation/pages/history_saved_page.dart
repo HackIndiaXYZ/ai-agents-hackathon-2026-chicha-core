@@ -10,6 +10,7 @@ import 'package:bhashalens_app/widgets/common_bottom_nav_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 class HistorySavedPage extends StatefulWidget {
   final int initialIndex;
@@ -101,8 +102,8 @@ class _HistorySavedPageState extends State<HistorySavedPage>
 
   @override
   Widget build(BuildContext context) {
-    const bgDark = Color(0xFF0F172A);
-    const cardColor = Color(0xFF1E293B);
+    final bgDark = AppColors.voidBg;
+    final cardColor = AppColors.surfaceDark;
 
     return Scaffold(
       backgroundColor: bgDark,
@@ -140,16 +141,16 @@ class _HistorySavedPageState extends State<HistorySavedPage>
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: const Color(0xFF1E293B),
+              color: AppColors.surfaceDark,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
             ),
             child: TabBar(
               controller: _tabController,
               indicator: const BoxDecoration(
-                color: Color(0xFF1E293B),
+                color: AppColors.surfaceDark,
                 border: Border(
-                  bottom: BorderSide(color: Color(0xFF136DEC), width: 2),
+                  bottom: BorderSide(color: AppColors.violetAccent, width: 2),
                 ),
               ),
               indicatorSize: TabBarIndicatorSize.tab,
@@ -172,7 +173,7 @@ class _HistorySavedPageState extends State<HistorySavedPage>
                   child: Container(
                     height: 44,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF1E293B),
+                      color: AppColors.surfaceDark,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: TextField(
@@ -201,7 +202,7 @@ class _HistorySavedPageState extends State<HistorySavedPage>
                   height: 44,
                   width: 44,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1E293B),
+                    color: AppColors.surfaceDark,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: IconButton(
@@ -238,12 +239,12 @@ class _HistorySavedPageState extends State<HistorySavedPage>
                     ),
                     decoration: BoxDecoration(
                       color: isSelected
-                          ? const Color(0xFF136DEC)
-                          : const Color(0xFF1E293B),
+                          ? AppColors.violetAccent
+                          : AppColors.surfaceDark,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                         color: isSelected
-                            ? const Color(0xFF136DEC)
+                            ? AppColors.violetAccent
                             : Colors.white.withValues(alpha: 0.1),
                       ),
                     ),
@@ -309,7 +310,7 @@ class _HistorySavedPageState extends State<HistorySavedPage>
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16, vertical: 8),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF136DEC),
+                                      color: AppColors.violetAccent,
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: const Row(
@@ -400,13 +401,13 @@ class _HistorySavedPageState extends State<HistorySavedPage>
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0F3661), // Dark Blue tag
+                      color: AppColors.violetAccent.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
                       "${item.sourceLang.toUpperCase()} \u2192 ${item.targetLang.toUpperCase()}",
                       style: const TextStyle(
-                        color: Color(0xFF3B82F6),
+                        color: AppColors.violetAccent,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),
@@ -462,29 +463,25 @@ class _HistorySavedPageState extends State<HistorySavedPage>
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: item.isSynced
-                      ? const Color(0xFFFF9900).withValues(alpha: 0.1) // AWS Orange tint
-                      : Colors.grey.withValues(alpha: 0.1),
+                  color: AppColors.tealAccent.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(
-                    color: item.isSynced
-                        ? const Color(0xFFFF9900).withValues(alpha: 0.3)
-                        : Colors.grey.withValues(alpha: 0.3),
+                    color: AppColors.tealAccent.withValues(alpha: 0.3),
                   ),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      item.isSynced ? Icons.cloud_done_outlined : Icons.cloud_off_outlined,
+                      Icons.security_outlined,
                       size: 12,
-                      color: item.isSynced ? const Color(0xFFFF9900) : Colors.grey,
+                      color: AppColors.tealAccent,
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     Text(
-                      item.isSynced ? "AWS Cloud" : "In-App",
+                      "Local Secured",
                       style: TextStyle(
-                        color: item.isSynced ? const Color(0xFFFF9900) : Colors.grey,
+                        color: AppColors.tealAccent,
                         fontSize: 9,
                         fontWeight: FontWeight.bold,
                       ),
@@ -517,7 +514,7 @@ class _HistorySavedPageState extends State<HistorySavedPage>
             padding: const EdgeInsets.only(left: 12),
             decoration: const BoxDecoration(
               border: Border(
-                left: BorderSide(color: Color(0xFF136DEC), width: 3),
+                left: BorderSide(color: AppColors.violetAccent, width: 3),
               ),
             ),
             child: Text(
@@ -544,7 +541,7 @@ class _HistorySavedPageState extends State<HistorySavedPage>
                   icon: const Icon(Icons.volume_up, size: 18),
                   label: const Text("Speak"),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF136DEC),
+                    backgroundColor: AppColors.violetAccent,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -559,7 +556,7 @@ class _HistorySavedPageState extends State<HistorySavedPage>
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: isSaved
-                        ? const Color(0xFF136DEC)
+                        ? AppColors.violetAccent
                         : Colors.white.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(10),
                     border:
@@ -582,7 +579,7 @@ class _HistorySavedPageState extends State<HistorySavedPage>
   void _showOptionsMs(HistoryItem item) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E293B),
+      backgroundColor: AppColors.surfaceDark,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),

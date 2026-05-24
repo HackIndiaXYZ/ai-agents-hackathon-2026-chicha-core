@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 class BackendIndicator extends StatelessWidget {
   final String backend;
@@ -20,18 +21,18 @@ class BackendIndicator extends StatelessWidget {
     switch (backend.toLowerCase()) {
       case 'bedrock':
       case 'awsbedrock':
-        color = Colors.blue;
+        color = AppColors.violetAccent;
         icon = Icons.auto_awesome;
         label = 'Gemini (Strict Mode)';
         break;
       case 'gemini':
-        color = Colors.blue;
+        color = AppColors.violetAccent;
         icon = Icons.auto_awesome;
         label = 'Gemini 1.5 Flash';
         break;
       case 'offline':
       case 'mlkit':
-        color = Colors.green;
+        color = AppColors.tealAccent;
         icon = Icons.offline_bolt;
         label = 'ML Kit (Offline)';
         break;

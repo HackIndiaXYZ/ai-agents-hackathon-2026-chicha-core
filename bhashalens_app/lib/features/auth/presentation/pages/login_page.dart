@@ -1,6 +1,7 @@
 import 'package:bhashalens_app/features/auth/domain/services/firebase_auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -115,10 +116,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    const Color bgDark = Color(0xFF101822);
-    const Color cardDark = Color(0xFF1E293B);
-    const Color primaryTeal = Color(0xFF26C6DA);
-    const Color textGrey = Color(0xFF9DA8B9);
+    const Color bgDark = AppColors.voidBg;
+    const Color cardDark = AppColors.surfaceDark;
+    const Color primaryTeal = AppColors.violetAccent;
+    const Color textGrey = AppColors.slate400;
 
     return Scaffold(
       backgroundColor: bgDark,

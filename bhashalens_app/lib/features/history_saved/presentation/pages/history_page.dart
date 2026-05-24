@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:bhashalens_app/features/history_saved/domain/services/history_service.dart';
 import 'package:bhashalens_app/features/history_saved/data/models/history_item.dart';
+import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -23,9 +24,9 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0F172A),
+      backgroundColor: AppColors.voidBg,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0F172A),
+        backgroundColor: AppColors.voidBg,
         elevation: 0,
         title: const Text(
           'Translation History',
@@ -103,7 +104,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      color: const Color(0xFF1E293B),
+      color: AppColors.surfaceDark,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -116,7 +117,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 Text(
                   '${item.sourceLang.toUpperCase()} → ${item.targetLang.toUpperCase()}',
                   style: const TextStyle(
-                    color: Colors.blue,
+                    color: AppColors.violetAccent,
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
                   ),
@@ -162,7 +163,7 @@ class _HistoryPageState extends State<HistoryPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E293B),
+        backgroundColor: AppColors.surfaceDark,
         title:
             const Text('Clear History', style: TextStyle(color: Colors.white)),
         content: const Text(

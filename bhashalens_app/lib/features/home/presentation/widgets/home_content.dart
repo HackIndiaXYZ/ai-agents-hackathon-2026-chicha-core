@@ -88,14 +88,11 @@ class HomeContent extends StatelessWidget {
           description: 'Translate text, voice, and signboards instantly',
           buttonText: 'Open Translation Mode',
           icon: Icons.camera_alt,
-          iconColor: AppColors.blue600,
+          iconColor: AppColors.violetAccent,
           isPrimary: true,
-          // Premium Deep Blue Gradient
+          // Premium Brand Gradient
           backgroundGradient: const LinearGradient(
-            colors: [
-              AppColors.slate900,
-              AppColors.blue700,
-            ],
+            colors: AppColors.blueGradient,
             begin: Alignment.bottomRight,
             end: Alignment.topLeft,
           ),
@@ -157,7 +154,7 @@ class HomeContent extends StatelessWidget {
             QuickAccessButton(
               label: 'Offline Pack',
               icon: Icons.wifi_off,
-              color: AppColors.blue600,
+              color: AppColors.violetAccent,
               onTap: () => Navigator.pushNamed(context, '/offline_models'),
             ),
             const SizedBox(width: 12),

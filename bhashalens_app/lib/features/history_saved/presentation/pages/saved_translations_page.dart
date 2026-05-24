@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:bhashalens_app/features/history_saved/data/models/saved_translation.dart';
+import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 class SavedTranslationsProvider extends ChangeNotifier {
   final List<SavedTranslation> _translations = [];
@@ -40,9 +39,9 @@ class _SavedTranslationsPageState extends State<SavedTranslationsPage> {
     final provider = Provider.of<SavedTranslationsProvider>(context);
     final grouped = _groupByDate(provider.translations);
     return Scaffold(
-      backgroundColor: const Color(0xFF111827), // Darker background
+      backgroundColor: AppColors.voidBg, // Branded Void main background
       appBar: AppBar(
-        backgroundColor: const Color(0xFF111827),
+        backgroundColor: AppColors.voidBg,
         elevation: 0,
         title: const Text(
           'Saved Translations',
@@ -69,7 +68,7 @@ class _SavedTranslationsPageState extends State<SavedTranslationsPage> {
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 filled: true,
-                fillColor: const Color(0xFF1F2937), // Lighter card color
+                fillColor: AppColors.surfaceDark, // Branded slate card color
                 prefixIcon: const Icon(Icons.search, color: Colors.grey),
                 hintText: 'Search saved translations...',
                 hintStyle: const TextStyle(color: Colors.grey),
@@ -88,7 +87,7 @@ class _SavedTranslationsPageState extends State<SavedTranslationsPage> {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
-                    color: Color(0xFF3B82F6),
+                    color: AppColors.violetAccent,
                     width: 1,
                   ),
                 ),
@@ -172,10 +171,10 @@ class _SavedTranslationsPageState extends State<SavedTranslationsPage> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: const Color(0xFF1F2937), // Card color
+        color: AppColors.surfaceDark, // Card color
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color(0xFF374151),
+          color: AppColors.borderDark,
           width: 1,
         ), // Thin border
       ),
@@ -223,7 +222,7 @@ class _SavedTranslationsPageState extends State<SavedTranslationsPage> {
                       child: Icon(
                         Icons.bookmark,
                         color: t.isStarred
-                            ? const Color(0xFF3B82F6)
+                            ? AppColors.violetAccent
                             : Colors.grey, // Blue when starred
                         size: 20,
                       ),
@@ -265,7 +264,7 @@ class _SavedTranslationsPageState extends State<SavedTranslationsPage> {
             Text(
               t.translatedText,
               style: const TextStyle(
-                color: Color(0xFF9CA3AF), // Lighter grey
+                color: AppColors.slate400, // Lighter grey
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
                 height: 1.4,
@@ -280,7 +279,7 @@ class _SavedTranslationsPageState extends State<SavedTranslationsPage> {
             Text(
               DateFormat('MMM d, yyyy').format(t.dateTime),
               style: const TextStyle(
-                color: Color(0xFF6B7280), // Dimmed date
+                color: AppColors.slate500, // Dimmed date
                 fontSize: 12,
               ),
             ),
@@ -292,8 +291,8 @@ class _SavedTranslationsPageState extends State<SavedTranslationsPage> {
 
   Widget _buildBottomNavBar() {
     return BottomNavigationBar(
-      backgroundColor: const Color(0xFF1A202C),
-      selectedItemColor: const Color(0xFF1193d4),
+      backgroundColor: AppColors.voidBg,
+      selectedItemColor: AppColors.violetAccent,
       unselectedItemColor: Colors.grey,
       type: BottomNavigationBarType.fixed,
       items: const [
@@ -304,7 +303,7 @@ class _SavedTranslationsPageState extends State<SavedTranslationsPage> {
         ),
         BottomNavigationBarItem(icon: Icon(Icons.mic), label: 'Voice'),
         BottomNavigationBarItem(
-          icon: Icon(Icons.bookmark, color: Color(0xFF1193d4)),
+          icon: Icon(Icons.bookmark, color: AppColors.violetAccent),
           label: 'Saved',
         ),
         BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),

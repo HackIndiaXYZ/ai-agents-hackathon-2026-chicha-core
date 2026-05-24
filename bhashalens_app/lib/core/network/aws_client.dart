@@ -13,7 +13,7 @@ class AwsApiGatewayClient extends ChangeNotifier {
     this.retryPolicy = RetryPolicy.defaultPolicy,
   });
 
-  bool get isEnabled => _isConfigured;
+  bool get isEnabled => false;
 
   Future<void> configure(String amplifyConfig) async {
     if (_isConfigured) return;

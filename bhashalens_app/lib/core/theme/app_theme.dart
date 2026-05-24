@@ -55,6 +55,7 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.light,
       textTheme: textTheme,
+      scaffoldBackgroundColor: AppColors.warmWhiteBg,
 
       // Color Scheme
       colorScheme: const ColorScheme.light(
@@ -189,6 +190,7 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.dark,
       textTheme: textTheme,
+      scaffoldBackgroundColor: AppColors.voidBg,
 
       // Color Scheme
       colorScheme: const ColorScheme.dark(

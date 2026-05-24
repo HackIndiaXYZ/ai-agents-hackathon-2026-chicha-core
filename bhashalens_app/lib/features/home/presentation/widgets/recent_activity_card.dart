@@ -37,13 +37,13 @@ class RecentActivityCard extends StatelessWidget {
                 Container(
                   width: 44,
                   height: 44,
-                  decoration: const BoxDecoration(
-                    color: AppColors.blue50,
+                  decoration: BoxDecoration(
+                    color: AppColors.violetAccent.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.history_rounded,
-                    color: AppColors.blue600,
+                    color: AppColors.indigoPrimary,
                     size: 22,
                   ),
                 ),

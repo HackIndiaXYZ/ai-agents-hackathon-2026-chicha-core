@@ -7,6 +7,7 @@ import 'package:bhashalens_app/features/history_saved/domain/services/history_se
 import 'package:bhashalens_app/core/network/aws_client.dart';
 import 'package:bhashalens_app/widgets/export_data_dialog.dart';
 import 'package:bhashalens_app/widgets/web_constrained_body.dart';
+import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -146,12 +147,12 @@ class _SettingsPageState extends State<SettingsPage> {
     final accessibilityController = Provider.of<AccessibilityController>(context);
     final prefsService = Provider.of<PreferencesService>(context);
 
-    // Theme Colors
-    const Color bgDark = Color(0xFF101822);
-    const Color cardDark = Color(0xFF1C222B);
-    const Color primaryBlue = Color(0xFF136DEC);
-    const Color textGrey = Color(0xFF94A3B8);
-    const Color dividerColor = Color(0xFF2D3748);
+    // Theme Colors - Mapped to the SamvadAI Brand Theme
+    const Color bgDark = AppColors.voidBg;
+    const Color cardDark = AppColors.surfaceDark;
+    const Color primaryBlue = AppColors.violetAccent;
+    const Color textGrey = AppColors.slate400;
+    const Color dividerColor = AppColors.borderDark;
 
     return Scaffold(
       backgroundColor: bgDark,
