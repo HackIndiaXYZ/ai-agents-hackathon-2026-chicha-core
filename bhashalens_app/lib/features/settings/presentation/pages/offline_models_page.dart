@@ -36,21 +36,21 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
       'lang2': 'en',
       'name': 'Hindi ↔ English',
       'description': 'Direct bidirectional translation. Sub-200ms latency.',
-      'size': '14.8 MB',
+      'size': '29.6 MB',
     },
     {
       'lang1': 'mr',
       'lang2': 'en',
       'name': 'Marathi ↔ English',
       'description': 'Direct bidirectional translation. Sub-200ms latency.',
-      'size': '14.8 MB',
+      'size': '29.6 MB',
     },
     {
       'lang1': 'hi',
       'lang2': 'mr',
       'name': 'Hindi ↔ Marathi',
       'description': 'Direct bidirectional translation. Sub-200ms latency.',
-      'size': '14.8 MB',
+      'size': '29.6 MB',
     },
   ];
 
@@ -381,9 +381,9 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: const Color(0xFF142033),
+                color: AppColors.surfaceDark,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFF1A2A44)),
+                border: Border.all(color: AppColors.borderDark),
               ),
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -391,7 +391,7 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                   Row(
                     children: [
                       Icon(Icons.bolt_rounded,
-                          color: Color(0xFFEAB308), size: 24),
+                          color: AppColors.amberAccent, size: 24),
                       SizedBox(width: 10),
                       Text(
                         'Direct offline models active',
@@ -447,7 +447,7 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                       Container(
                         height: 6,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF28313F),
+                          color: AppColors.borderDark,
                           borderRadius: BorderRadius.circular(3),
                         ),
                       ),
@@ -494,7 +494,7 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
-                color: const Color(0xFF19202A),
+                color: AppColors.surfaceDark,
                 borderRadius: BorderRadius.circular(25),
                 border: Border.all(color: dividerColor),
               ),
@@ -734,8 +734,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                               else
                                 Text(
                                   status == 'downloaded'
-                                      ? '14.8 MB • Downloaded'
-                                      : '14.8 MB • Offline Direct',
+                                      ? '${pack['size']} • Downloaded'
+                                      : '${pack['size']} • Offline Direct',
                                   style: TextStyle(
                                     color: status == 'downloaded'
                                         ? const Color(0xFF22C55E)

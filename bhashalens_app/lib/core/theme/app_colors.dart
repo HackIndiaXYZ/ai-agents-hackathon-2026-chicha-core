@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 /// App color palette based on SamvadAI brand design system
 class AppColors {
   // --- CORE BRAND COLORS ---
-  static const Color voidBg = Color(0xFF0B0B19);        // Dark mode main background
-  static const Color indigoPrimary = Color(0xFF1E1654); // Primary theme color
-  static const Color violetAccent = Color(0xFF888CF6);  // Accent A
+  static const Color voidBg = Color(0xFF0A0915);        // Dark mode main background
+  static const Color indigoPrimary = Color(0xFF191554); // Primary theme color
+  static const Color violetAccent = Color(0xFF858CF6);  // Accent A
   static const Color amberAccent = Color(0xFFF59E0B);   // Accent B
   static const Color tealAccent = Color(0xFF0D9488);    // Accent C
-  static const Color warmWhiteBg = Color(0xFFFAF9F5);   // Light mode main background
+  static const Color warmWhiteBg = Color(0xFFFAFAF9);   // Light mode main background
 
   // --- GRAYSCALE SLATE PALETTE ---
   static const Color slate50 = Color(0xFFF8FAFC);
@@ -35,8 +35,8 @@ class AppColors {
   static const Color background = warmWhiteBg;
   static const Color backgroundDark = voidBg;
   static const Color surface = Colors.white;
-  static const Color surfaceDark = Color(0xFF161633); // Sleek Indigo-void container for cards
-
+  static const Color surfaceDark = Color(0xFF13103B); // Sleek Indigo-void container for cards
+  
   static const Color text = Color(0xFF0F172A);
   static const Color textLight = slate500;
   static const Color textMuted = slate500;
@@ -45,9 +45,9 @@ class AppColors {
   static const Color textDark = Colors.white;
 
   static const Color border = slate200;
-  static const Color borderDark = Color(0xFF28284E);
+  static const Color borderDark = Color(0xFF231F6D);
   static const Color divider = slate200;
-  static const Color dividerDark = Color(0xFF28284E);
+  static const Color dividerDark = Color(0xFF231F6D);
 
   // States
   static const Color success = tealAccent;
@@ -70,5 +70,5 @@ class AppColors {
 
   // Gradients for glassmorphism and accents
   static const List<Color> blueGradient = [indigoPrimary, violetAccent];
-  static const List<Color> darkGradient = [voidBg, Color(0xFF161633)];
+  static const List<Color> darkGradient = [voidBg, Color(0xFF13103B)];
 }

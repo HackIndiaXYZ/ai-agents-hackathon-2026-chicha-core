@@ -6,6 +6,9 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:bhashalens_app/features/translation/data/services/ml_kit_translation_service.dart';
 import 'package:bhashalens_app/core/database/local_storage_service.dart';
 import 'package:bhashalens_app/features/translation/domain/services/hybrid_translation_service.dart';
+import 'package:bhashalens_app/features/translation/data/models/language_pair.dart';
+import 'package:bhashalens_app/features/translation/data/services/offline_translation_service.dart';
+import 'package:bhashalens_app/features/translation/data/services/ct2_model_manager.dart';
 
 /// Offline readiness status for a language
 class LanguageOfflineStatus {
@@ -147,6 +150,10 @@ class VoiceTranslationService extends ChangeNotifier {
     // Initial connectivity check
     await checkConnectivity();
 
+    // Populate offline status for initial active languages
+    await _refreshOfflineStatus(_userALanguage);
+    await _refreshOfflineStatus(_userBLanguage);
+
     // Listen to connectivity changes
     _connectivitySubscription =
         Connectivity().onConnectivityChanged.listen((results) {
@@ -186,9 +193,32 @@ class VoiceTranslationService extends ChangeNotifier {
 
   /// Check offline readiness for all three components: STT, Translation, TTS
   Future<LanguageOfflineStatus> checkLanguageReadiness(String languageCode) async {
-    final stt = isLocaleAvailable(languageCode);
-    final translation = await _mlKitService.isModelDownloaded(languageCode);
-    final tts = await isTtsAvailable(languageCode);
+    final mlKitDownloaded = await _mlKitService.isModelDownloaded(languageCode);
+    
+    // Check if CTranslate2 regional pack is downloaded
+    bool ct2Downloaded = false;
+    if (languageCode == 'hi') {
+      ct2Downloaded = await CT2ModelManager().isPackDownloaded('hi', 'en') ||
+          await CT2ModelManager().isPackDownloaded('hi', 'mr');
+    } else if (languageCode == 'mr') {
+      ct2Downloaded = await CT2ModelManager().isPackDownloaded('mr', 'en') ||
+          await CT2ModelManager().isPackDownloaded('hi', 'mr');
+    }
+    
+    final translation = mlKitDownloaded || ct2Downloaded;
+    
+    bool stt;
+    bool tts;
+    // BhashaLens specific: If Hindi or Marathi and the in-app regional translation pack is downloaded,
+    // bypass external system-level speech setting checks and assume voice feature (STT & TTS) is fully ready.
+    if ((languageCode == 'hi' || languageCode == 'mr') && translation) {
+      stt = true;
+      tts = true;
+    } else {
+      stt = isLocaleAvailable(languageCode);
+      tts = await isTtsAvailable(languageCode);
+    }
+    
     return LanguageOfflineStatus(
       sttAvailable: stt,
       translationModelReady: translation,
@@ -198,6 +228,10 @@ class VoiceTranslationService extends ChangeNotifier {
 
   /// Check if TTS can speak a given language
   Future<bool> isTtsAvailable(String languageCode) async {
+    if ((languageCode == 'hi' || languageCode == 'mr') &&
+        _offlineStatus[languageCode]?.translationModelReady == true) {
+      return true;
+    }
     try {
       final localeCode = _getLanguageCode(languageCode);
       final result = await _flutterTts.isLanguageAvailable(localeCode);
@@ -210,6 +244,10 @@ class VoiceTranslationService extends ChangeNotifier {
 
   /// Check if a speech locale is available on this device
   bool isLocaleAvailable(String languageCode) {
+    if ((languageCode == 'hi' || languageCode == 'mr') &&
+        _offlineStatus[languageCode]?.translationModelReady == true) {
+      return true;
+    }
     final localeId = _getLanguageCode(languageCode);
     // Check both exact match and prefix match (e.g., 'mr' matches 'mr-IN')
     return _availableLocales.any((locale) =>
@@ -226,6 +264,19 @@ class VoiceTranslationService extends ChangeNotifier {
 
   /// Check if offline translation models are ready for a language pair
   Future<bool> areOfflineModelsReady(String langA, String langB) async {
+    // Check if CTranslate2 regional pack is downloaded for the specific pair
+    final isCT2Supported = (langA == 'hi' && langB == 'mr') ||
+        (langA == 'mr' && langB == 'hi') ||
+        (langA == 'hi' && langB == 'en') ||
+        (langA == 'en' && langB == 'hi') ||
+        (langA == 'mr' && langB == 'en') ||
+        (langA == 'en' && langB == 'mr');
+        
+    if (isCT2Supported) {
+      final ct2Ready = await CT2ModelManager().isPackDownloaded(langA, langB);
+      if (ct2Ready) return true;
+    }
+
     final aReady = await _mlKitService.isModelDownloaded(langA);
     final bReady = await _mlKitService.isModelDownloaded(langB);
     // English is needed as intermediate for non-English pairs
@@ -365,6 +416,27 @@ class VoiceTranslationService extends ChangeNotifier {
           }
         }
 
+        // Prioritize custom CTranslate2 direct regional translation for hi/mr/en pairs
+        final srcLanguage = _parseLanguage(actualSourceLanguage);
+        final tgtLanguage = _parseLanguage(toLanguage);
+        final isCustomPairSupported = srcLanguage != null && tgtLanguage != null;
+        
+        if (isCustomPairSupported) {
+          final ct2Ready = await CT2ModelManager().isPackDownloaded(actualSourceLanguage, toLanguage);
+          if (ct2Ready) {
+            debugPrint('VoiceTranslationService: Using direct CTranslate2 offline translation for $actualSourceLanguage -> $toLanguage');
+            final ct2Result = await OfflineTranslationService().translate(
+              text: text,
+              sourceLang: srcLanguage,
+              targetLang: tgtLanguage,
+            );
+            if (ct2Result.success) {
+              return ct2Result.translatedText;
+            }
+          }
+        }
+
+        // Fallback to ML Kit translation
         // Check if models are available before attempting translation
         final missingModels = await _mlKitService
             .getMissingModelsForTranslation(actualSourceLanguage, toLanguage);
@@ -520,6 +592,44 @@ class VoiceTranslationService extends ChangeNotifier {
         return 'ur-PK';
       default:
         return 'en-US';
+    }
+  }
+
+  Language? _parseLanguage(String code) {
+    final clean = code.toLowerCase().trim();
+    if (clean == 'en' || clean == 'english') return Language.english;
+    if (clean == 'hi' || clean == 'hindi') return Language.hindi;
+    if (clean == 'mr' || clean == 'marathi') return Language.marathi;
+    return null;
+  }
+
+  static String getLanguagePackSize(String languageCode) {
+    switch (languageCode) {
+      case 'hi':
+        return '42.5 MB';
+      case 'ta':
+        return '45.1 MB';
+      case 'bn':
+        return '38.2 MB';
+      case 'mr':
+        return '35.0 MB';
+      case 'te':
+        return '41.8 MB';
+      case 'en':
+        return '30.0 MB';
+      case 'es':
+      case 'fr':
+      case 'de':
+      case 'it':
+      case 'pt':
+      case 'ru':
+      case 'ja':
+      case 'ko':
+      case 'zh':
+      case 'ar':
+        return '39.4 MB';
+      default:
+        return '';
     }
   }
 

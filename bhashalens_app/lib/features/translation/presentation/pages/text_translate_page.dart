@@ -387,9 +387,11 @@ class _TextTranslatePageState extends State<TextTranslatePage> {
             isExpanded: true,
             onChanged: onChanged,
             items: languages.entries.map((e) {
+              final sizeStr = VoiceTranslationService.getLanguagePackSize(e.key);
+              final displayText = sizeStr.isNotEmpty ? '${e.value} ($sizeStr)' : e.value;
               return DropdownMenuItem<String>(
                 value: e.key,
-                child: Text(e.value),
+                child: Text(displayText),
               );
             }).toList(),
           ),

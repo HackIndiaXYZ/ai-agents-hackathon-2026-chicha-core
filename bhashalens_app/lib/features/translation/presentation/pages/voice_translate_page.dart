@@ -443,6 +443,8 @@ class _VoiceTranslatePageState extends State<VoiceTranslatePage> {
           items: VoiceTranslationService.supportedLanguages.entries.map((e) {
             final vs = context.read<VoiceTranslationService>();
             final status = vs.offlineStatus[e.key];
+            final sizeStr = VoiceTranslationService.getLanguagePackSize(e.key);
+            final displayText = sizeStr.isNotEmpty ? '${e.value} ($sizeStr)' : e.value;
             Widget? trailing;
             if (status != null) {
               if (status.isFullyReady) {
@@ -460,7 +462,7 @@ class _VoiceTranslatePageState extends State<VoiceTranslatePage> {
               value: e.key,
               child: Row(
                 children: [
-                  Expanded(child: Text(e.value)),
+                  Expanded(child: Text(displayText)),
                   if (trailing != null) ...[const SizedBox(width: 4), trailing],
                 ],
               ),
