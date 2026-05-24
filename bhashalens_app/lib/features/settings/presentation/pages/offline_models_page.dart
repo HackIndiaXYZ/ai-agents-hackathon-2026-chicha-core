@@ -1,7 +1,7 @@
+import 'package:bhashalens_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:bhashalens_app/features/translation/data/services/ml_kit_translation_service.dart';
 import 'package:bhashalens_app/features/translation/data/services/ct2_model_manager.dart';
-import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 class OfflineModelsPage extends StatefulWidget {
   const OfflineModelsPage({super.key});
@@ -13,7 +13,7 @@ class OfflineModelsPage extends StatefulWidget {
 class _OfflineModelsPageState extends State<OfflineModelsPage> {
   final _mlKitService = MlKitTranslationService();
   final _ct2ModelManager = CT2ModelManager();
-  
+
   final List<Map<String, String>> _supportedLanguages =
       MlKitTranslationService().getSupportedLanguages();
 
@@ -26,7 +26,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
   final Map<String, double> _ct2DownloadProgress = {};
 
   bool _wifiOnly = true;
-  int _activeTab = 0; // 0 for CTranslate2 Direct Regional, 1 for ML Kit Fallbacks
+  int _activeTab =
+      0; // 0 for CTranslate2 Direct Regional, 1 for ML Kit Fallbacks
 
   // CTranslate2 packs
   static const List<Map<String, String>> _ct2Packs = [
@@ -56,7 +57,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
   // Theme Colors - Mapped to the SamvadAI Brand Theme
   static const Color bgDark = AppColors.voidBg; // main background
   static const Color cardDark = AppColors.surfaceDark; // card background
-  static const Color primaryBlue = AppColors.violetAccent; // Active Accent (Violet)
+  static const Color primaryBlue =
+      AppColors.violetAccent; // Active Accent (Violet)
   static const Color textGrey = AppColors.slate400;
   static const Color dividerColor = AppColors.borderDark;
 
@@ -77,7 +79,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
       final lang2 = pack['lang2']!;
       final key = _ct2ModelManager.getPackKey(lang1, lang2);
 
-      final isDownloaded = await _ct2ModelManager.isPackDownloaded(lang1, lang2);
+      final isDownloaded =
+          await _ct2ModelManager.isPackDownloaded(lang1, lang2);
       localCt2Status[key] = isDownloaded ? 'downloaded' : 'not_downloaded';
     }
 
@@ -147,9 +150,11 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.check_circle_rounded, color: Color(0xFF22C55E), size: 20),
+                const Icon(Icons.check_circle_rounded,
+                    color: Color(0xFF22C55E), size: 20),
                 const SizedBox(width: 8),
-                Text('Direct Regional Pack ($lang1 ↔ $lang2) installed successfully!'),
+                Text(
+                    'Direct Regional Pack ($lang1 ↔ $lang2) installed successfully!'),
               ],
             ),
             backgroundColor: const Color(0xFF1E2530),
@@ -192,7 +197,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
           SnackBar(
             content: Row(
               children: [
-                const Icon(Icons.delete_sweep_rounded, color: Color(0xFFEF4444), size: 20),
+                const Icon(Icons.delete_sweep_rounded,
+                    color: Color(0xFFEF4444), size: 20),
                 const SizedBox(width: 8),
                 Text('Direct Regional Pack ($lang1 ↔ $lang2) deleted.'),
               ],
@@ -242,7 +248,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
           _checkDownloadedModels();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Download failed'), backgroundColor: Colors.red),
+            const SnackBar(
+                content: Text('Download failed'), backgroundColor: Colors.red),
           );
         }
       }
@@ -277,13 +284,20 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
 
   double _getMlKitModelSizeInMB(String code) {
     switch (code) {
-      case 'hi': return 42.5;
-      case 'ta': return 45.1;
-      case 'bn': return 38.2;
-      case 'mr': return 35.0;
-      case 'te': return 41.8;
-      case 'en': return 30.0;
-      default: return 39.4;
+      case 'hi':
+        return 42.5;
+      case 'ta':
+        return 45.1;
+      case 'bn':
+        return 38.2;
+      case 'mr':
+        return 35.0;
+      case 'te':
+        return 41.8;
+      case 'en':
+        return 30.0;
+      default:
+        return 39.4;
     }
   }
 
@@ -311,13 +325,20 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
 
   Color _getFlagColor(String code) {
     switch (code) {
-      case 'hi': return const Color(0xFF6E432A);
-      case 'ta': return const Color(0xFF29406B);
-      case 'bn': return const Color(0xFF285C42);
-      case 'mr': return const Color(0xFF6B3037);
-      case 'te': return const Color(0xFF423B69);
-      case 'en': return const Color(0xFF1F4E79);
-      default: return const Color(0xFF4A5568);
+      case 'hi':
+        return const Color(0xFF6E432A);
+      case 'ta':
+        return const Color(0xFF29406B);
+      case 'bn':
+        return const Color(0xFF285C42);
+      case 'mr':
+        return const Color(0xFF6B3037);
+      case 'te':
+        return const Color(0xFF423B69);
+      case 'en':
+        return const Color(0xFF1F4E79);
+      default:
+        return const Color(0xFF4A5568);
     }
   }
 
@@ -326,20 +347,23 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
     final double totalUsageMB = _calculateTotalDownloadedSize();
     const double maxStorageMB = 2048.0; // 2 GB
     final double progressRatio = (totalUsageMB / maxStorageMB).clamp(0.0, 1.0);
-    final double availableSpaceMB = (maxStorageMB - totalUsageMB).clamp(0.0, maxStorageMB);
+    final double availableSpaceMB =
+        (maxStorageMB - totalUsageMB).clamp(0.0, maxStorageMB);
 
     return Scaffold(
       backgroundColor: bgDark,
       appBar: AppBar(
         title: const Text(
           'Offline Packs',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
         ),
         backgroundColor: bgDark,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+          icon: const Icon(Icons.arrow_back_ios_new,
+              color: Colors.white, size: 20),
           onPressed: () => Navigator.of(context).pop(),
         ),
         bottom: PreferredSize(
@@ -366,7 +390,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.bolt_rounded, color: Color(0xFFEAB308), size: 24),
+                      Icon(Icons.bolt_rounded,
+                          color: Color(0xFFEAB308), size: 24),
                       SizedBox(width: 10),
                       Text(
                         'Direct offline models active',
@@ -381,7 +406,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                   SizedBox(height: 12),
                   Text(
                     'Switched to an ultra-efficient CTranslate2 machine translation architecture. Packs are condensed to just 14.8MB per direction for direct bidirectional local translations.',
-                    style: TextStyle(color: Colors.white70, fontSize: 13, height: 1.4),
+                    style: TextStyle(
+                        color: Colors.white70, fontSize: 13, height: 1.4),
                   ),
                 ],
               ),
@@ -428,7 +454,9 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
                         height: 6,
-                        width: MediaQuery.of(context).size.width * 0.9 * progressRatio,
+                        width: MediaQuery.of(context).size.width *
+                            0.9 *
+                            progressRatio,
                         decoration: BoxDecoration(
                           color: primaryBlue,
                           borderRadius: BorderRadius.circular(3),
@@ -483,7 +511,9 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                         duration: const Duration(milliseconds: 250),
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                          color: _activeTab == 0 ? primaryBlue : Colors.transparent,
+                          color: _activeTab == 0
+                              ? primaryBlue
+                              : Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Center(
@@ -493,13 +523,15 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                               Icon(
                                 Icons.bolt_rounded,
                                 size: 16,
-                                color: _activeTab == 0 ? Colors.white : textGrey,
+                                color:
+                                    _activeTab == 0 ? Colors.white : textGrey,
                               ),
                               const SizedBox(width: 6),
                               Text(
                                 'Direct Regional',
                                 style: TextStyle(
-                                  color: _activeTab == 0 ? Colors.white : textGrey,
+                                  color:
+                                      _activeTab == 0 ? Colors.white : textGrey,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 13,
                                 ),
@@ -521,7 +553,9 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                         duration: const Duration(milliseconds: 250),
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         decoration: BoxDecoration(
-                          color: _activeTab == 1 ? primaryBlue : Colors.transparent,
+                          color: _activeTab == 1
+                              ? primaryBlue
+                              : Colors.transparent,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Center(
@@ -531,13 +565,15 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                               Icon(
                                 Icons.layers_rounded,
                                 size: 16,
-                                color: _activeTab == 1 ? Colors.white : textGrey,
+                                color:
+                                    _activeTab == 1 ? Colors.white : textGrey,
                               ),
                               const SizedBox(width: 6),
                               Text(
                                 'General Fallbacks',
                                 style: TextStyle(
-                                  color: _activeTab == 1 ? Colors.white : textGrey,
+                                  color:
+                                      _activeTab == 1 ? Colors.white : textGrey,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 13,
                                 ),
@@ -561,7 +597,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                   if (_activeTab == 0) ...[
                     const Row(
                       children: [
-                        Icon(Icons.bolt_rounded, color: Colors.orangeAccent, size: 18),
+                        Icon(Icons.bolt_rounded,
+                            color: Colors.orangeAccent, size: 18),
                         SizedBox(width: 6),
                         Text(
                           'CTranslate2 Local Packs',
@@ -576,12 +613,14 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                     const SizedBox(height: 6),
                     const Text(
                       'Optimized sub-15MB distilled student models. Bypasses intermediate pivot layers for high-performance direct local translation under 200ms.',
-                      style: TextStyle(color: textGrey, fontSize: 12, height: 1.4),
+                      style:
+                          TextStyle(color: textGrey, fontSize: 12, height: 1.4),
                     ),
                   ] else ...[
                     const Row(
                       children: [
-                        Icon(Icons.translate_rounded, color: primaryBlue, size: 18),
+                        Icon(Icons.translate_rounded,
+                            color: primaryBlue, size: 18),
                         SizedBox(width: 6),
                         Text(
                           'ML Kit Standard Models',
@@ -596,7 +635,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                     const SizedBox(height: 6),
                     const Text(
                       'Universal offline translation packs. Standard non-custom language pairs route securely via intermediate English pivot translation.',
-                      style: TextStyle(color: textGrey, fontSize: 12, height: 1.4),
+                      style:
+                          TextStyle(color: textGrey, fontSize: 12, height: 1.4),
                     ),
                   ],
                   const SizedBox(height: 16),
@@ -615,12 +655,15 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                 final progress = _ct2DownloadProgress[key] ?? 0.0;
 
                 return Container(
-                  margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
+                  margin:
+                      const EdgeInsets.only(left: 16, right: 16, bottom: 12),
                   decoration: BoxDecoration(
                     color: cardDark,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: status == 'downloaded' ? primaryBlue.withAlpha(76) : Colors.transparent,
+                      color: status == 'downloaded'
+                          ? primaryBlue.withAlpha(76)
+                          : Colors.transparent,
                     ),
                   ),
                   child: Padding(
@@ -638,7 +681,9 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                           child: Center(
                             child: Icon(
                               Icons.bolt_rounded,
-                              color: status == 'downloaded' ? Colors.orangeAccent : Colors.white70,
+                              color: status == 'downloaded'
+                                  ? Colors.orangeAccent
+                                  : Colors.white70,
                               size: 24,
                             ),
                           ),
@@ -668,7 +713,9 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                                         child: LinearProgressIndicator(
                                           value: progress,
                                           backgroundColor: dividerColor,
-                                          valueColor: const AlwaysStoppedAnimation<Color>(primaryBlue),
+                                          valueColor:
+                                              const AlwaysStoppedAnimation<
+                                                  Color>(primaryBlue),
                                           minHeight: 4,
                                         ),
                                       ),
@@ -686,9 +733,13 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                                 )
                               else
                                 Text(
-                                  status == 'downloaded' ? '14.8 MB • Downloaded' : '14.8 MB • Offline Direct',
+                                  status == 'downloaded'
+                                      ? '14.8 MB • Downloaded'
+                                      : '14.8 MB • Offline Direct',
                                   style: TextStyle(
-                                    color: status == 'downloaded' ? const Color(0xFF22C55E) : textGrey,
+                                    color: status == 'downloaded'
+                                        ? const Color(0xFF22C55E)
+                                        : textGrey,
                                     fontSize: 12,
                                   ),
                                 ),
@@ -708,12 +759,14 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                 final code = lang['code']!;
                 final name = lang['name']!;
                 final status = _modelStatus[code] ?? 'not_downloaded';
-                final size = '${_getMlKitModelSizeInMB(code).toStringAsFixed(1)} MB';
+                final size =
+                    '${_getMlKitModelSizeInMB(code).toStringAsFixed(1)} MB';
                 final progress = _downloadProgress[code] ?? 0.0;
                 final flagColor = _getFlagColor(code);
 
                 return Container(
-                  margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
+                  margin:
+                      const EdgeInsets.only(left: 16, right: 16, bottom: 12),
                   decoration: BoxDecoration(
                     color: cardDark,
                     borderRadius: BorderRadius.circular(12),
@@ -737,7 +790,7 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                           ),
                         ),
                         const SizedBox(width: 16),
-                        
+
                         // Title & Subtitle
                         Expanded(
                           child: Column(
@@ -761,7 +814,9 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                                         child: LinearProgressIndicator(
                                           value: progress,
                                           backgroundColor: dividerColor,
-                                          valueColor: const AlwaysStoppedAnimation<Color>(primaryBlue),
+                                          valueColor:
+                                              const AlwaysStoppedAnimation<
+                                                  Color>(primaryBlue),
                                           minHeight: 4,
                                         ),
                                       ),
@@ -779,7 +834,9 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                                 )
                               else
                                 Text(
-                                  status == 'downloaded' ? '$size • Downloaded' : size,
+                                  status == 'downloaded'
+                                      ? '$size • Downloaded'
+                                      : size,
                                   style: const TextStyle(
                                     color: textGrey,
                                     fontSize: 12,
@@ -788,7 +845,7 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                             ],
                           ),
                         ),
-                        
+
                         const SizedBox(width: 16),
                         _buildMlKitAction(code, status),
                       ],
@@ -796,12 +853,12 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
                   ),
                 );
               }),
-            
+
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Divider(color: dividerColor, height: 1),
             ),
-            
+
             // Wi-Fi Only Switch
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16, bottom: 40),
@@ -875,7 +932,7 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
         children: [
           const Icon(
             Icons.check_circle,
-            color: Color(0xFF22C55E), 
+            color: Color(0xFF22C55E),
             size: 22,
           ),
           const SizedBox(width: 12),
@@ -883,7 +940,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
             width: 44,
             height: 44,
             child: IconButton(
-              icon: const Icon(Icons.delete_outline, color: Color(0xFFEF4444), size: 22),
+              icon: const Icon(Icons.delete_outline,
+                  color: Color(0xFFEF4444), size: 22),
               onPressed: () => _deleteCT2Pack(l1, l2),
               padding: EdgeInsets.zero,
               splashRadius: 24,
@@ -899,7 +957,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
           child: SizedBox(
             width: 20,
             height: 20,
-            child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFFEF4444)),
+            child: CircularProgressIndicator(
+                strokeWidth: 2, color: Color(0xFFEF4444)),
           ),
         ),
       );
@@ -948,7 +1007,7 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
         children: [
           const Icon(
             Icons.check_circle,
-            color: Color(0xFF22C55E), 
+            color: Color(0xFF22C55E),
             size: 22,
           ),
           const SizedBox(width: 12),
@@ -956,7 +1015,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
             width: 44,
             height: 44,
             child: IconButton(
-              icon: const Icon(Icons.delete_outline, color: Color(0xFFEF4444), size: 22),
+              icon: const Icon(Icons.delete_outline,
+                  color: Color(0xFFEF4444), size: 22),
               onPressed: () => _deleteMlKitModel(code),
               padding: EdgeInsets.zero,
               splashRadius: 24,
@@ -972,7 +1032,8 @@ class _OfflineModelsPageState extends State<OfflineModelsPage> {
           child: SizedBox(
             width: 20,
             height: 20,
-            child: CircularProgressIndicator(strokeWidth: 2, color: Color(0xFFEF4444)),
+            child: CircularProgressIndicator(
+                strokeWidth: 2, color: Color(0xFFEF4444)),
           ),
         ),
       );
