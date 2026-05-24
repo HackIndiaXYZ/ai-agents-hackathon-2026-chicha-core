@@ -102,8 +102,8 @@ class _HistorySavedPageState extends State<HistorySavedPage>
 
   @override
   Widget build(BuildContext context) {
-    final bgDark = AppColors.voidBg;
-    final cardColor = AppColors.surfaceDark;
+    const bgDark = AppColors.voidBg;
+    const cardColor = AppColors.surfaceDark;
 
     return Scaffold(
       backgroundColor: bgDark,
