@@ -7,7 +7,6 @@ import 'package:bhashalens_app/features/history_saved/domain/services/history_se
 import 'package:bhashalens_app/core/network/aws_client.dart';
 import 'package:bhashalens_app/widgets/export_data_dialog.dart';
 import 'package:bhashalens_app/widgets/web_constrained_body.dart';
-import 'package:bhashalens_app/core/theme/app_colors.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

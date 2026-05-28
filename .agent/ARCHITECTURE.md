@@ -120,12 +120,13 @@ Modular knowledge domains that agents can load on-demand. based on task context.
 
 ### Architecture & Planning
 
-| Skill           | Description                |
-| --------------- | -------------------------- |
-| `app-builder`   | Full-stack app scaffolding |
-| `architecture`  | System design patterns     |
-| `plan-writing`  | Task planning, breakdown   |
-| `brainstorming` | Socratic questioning       |
+| Skill                      | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| `app-builder`              | Full-stack app scaffolding                                   |
+| `architecture`             | System design patterns                                       |
+| `plan-writing`             | Task planning, breakdown                                     |
+| `brainstorming`            | Socratic questioning                                         |
+| `bhashalens-spec-generator` | BhashaLens spec generator and ReportLab PDF asset compiler  |
 
 ### Mobile
 
@@ -210,10 +211,11 @@ skill-name/
 
 ### Enhanced Skills (with scripts/references)
 
-| Skill               | Files | Coverage                            |
-| ------------------- | ----- | ----------------------------------- |
-| `ui-ux-pro-max`     | 27    | 50 styles, 21 palettes, 50 fonts    |
-| `app-builder`       | 20    | Full-stack scaffolding              |
+| Skill                      | Files | Coverage                                                 |
+| -------------------------- | ----- | -------------------------------------------------------- |
+| `ui-ux-pro-max`            | 27    | 50 styles, 21 palettes, 50 fonts                         |
+| `app-builder`              | 20    | Full-stack scaffolding                                   |
+| `bhashalens-spec-generator` | 2     | Technical specification MD & ReportLab PDF compiler script |
 
 ---
 
